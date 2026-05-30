@@ -1,399 +1,350 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { Plus, Upload, Download, Search, Trash2, Edit2, Phone } from 'lucide-react';
+import {
+  Plus,
+  Upload,
+  Download,
+  Search,
+  Trash2,
+  Edit2,
+  Phone,
+  Users,
+  Smartphone
+} from 'lucide-react';
+
 import Header from '../components/layout/Header';
-import { Table, Modal, ConfirmDialog, EmptyState, Pagination, Spinner } from '../components/ui';
+import {
+  Table,
+  Modal,
+  ConfirmDialog,
+  EmptyState,
+  Pagination,
+  Spinner,
+  StatCard
+} from '../components/ui';
+
 import { contactsAPI } from '../api';
 import toast from 'react-hot-toast';
+
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-const PLATFORMS = [{
-  key: 'whatsapp',
-  label: 'WhatsApp',
-  color: 'text-emerald-400'
-}, {
-  key: 'facebook',
-  label: 'Facebook',
-  color: 'text-blue-400'
-}, {
-  key: 'instagram',
-  label: 'Instagram',
-  color: 'text-pink-400'
-}, {
-  key: 'tiktok',
-  label: 'TikTok',
-  color: 'text-purple-400'
-}, {
-  key: 'phone',
-  label: 'Phone',
-  color: 'text-yellow-400'
-}];
-function ContactModal({
-  contact,
-  onClose,
-  onSave
-}) {
+
+const PLATFORMS = [
+  { key: 'phone', label: 'Phone', icon: Phone, color: 'blue' },
+  { key: 'whatsapp', label: 'WhatsApp', icon: Smartphone, color: 'green' },
+  { key: 'facebook', label: 'Facebook', color: 'blue' },
+  { key: 'instagram', label: 'Instagram', color: 'purple' },
+  { key: 'tiktok', label: 'TikTok', color: 'yellow' }
+];
+
+function ContactModal({ contact, onClose, onSave }) {
   const [form, setForm] = useState(contact || {});
   const [loading, setLoading] = useState(false);
+
   const isEdit = !!contact?._id;
-  const set = k => e => setForm(f => ({
-    ...f,
-    [k]: e.target.value
-  }));
+
+  const set = (k) => (e) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+
   const handleSave = async () => {
-    if (!form.name?.trim()) return toast.error('Name is required');
+    if (!form.name?.trim()) {
+      toast.error('Name is required');
+      return;
+    }
+
     setLoading(true);
+
     try {
       if (isEdit) {
         await contactsAPI.update(contact._id, form);
-        toast.success('Contact updated successfully');
+        toast.success('Contact updated');
       } else {
         await contactsAPI.create(form);
-        toast.success('Contact created successfully');
+        toast.success('Contact created');
       }
+
       onSave();
       onClose();
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to save contact');
+      toast.error(err?.response?.data?.message || 'Failed to save contact');
     } finally {
       setLoading(false);
     }
   };
-  return /*#__PURE__*/_jsxs(Modal, {
-    isOpen: true,
-    onClose: onClose,
-    title: isEdit ? 'Edit Contact' : 'New Contact',
-    size: "lg",
-    children: [/*#__PURE__*/_jsxs("div", {
-      className: "grid grid-cols-2 gap-4",
-      children: [/*#__PURE__*/_jsxs("div", {
-        className: "col-span-2",
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "Full Name *"
-        }), /*#__PURE__*/_jsx("input", {
-          value: form.name || '',
-          onChange: set('name'),
-          placeholder: "Contact name",
-          className: "input",
-          required: true
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "Company"
-        }), /*#__PURE__*/_jsx("input", {
-          value: form.company || '',
-          onChange: set('company'),
-          placeholder: "Company name",
-          className: "input"
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "Email"
-        }), /*#__PURE__*/_jsx("input", {
-          type: "email",
-          value: form.email || '',
-          onChange: set('email'),
-          placeholder: "email@example.com",
-          className: "input"
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "Phone"
-        }), /*#__PURE__*/_jsx("input", {
-          value: form.phone || '',
-          onChange: set('phone'),
-          placeholder: "+234...",
-          className: "input"
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "WhatsApp"
-        }), /*#__PURE__*/_jsx("input", {
-          value: form.whatsapp || '',
-          onChange: set('whatsapp'),
-          placeholder: "+234...",
-          className: "input"
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "Facebook"
-        }), /*#__PURE__*/_jsx("input", {
-          value: form.facebook || '',
-          onChange: set('facebook'),
-          placeholder: "Facebook handle",
-          className: "input"
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "Instagram"
-        }), /*#__PURE__*/_jsx("input", {
-          value: form.instagram || '',
-          onChange: set('instagram'),
-          placeholder: "@handle",
-          className: "input"
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "TikTok"
-        }), /*#__PURE__*/_jsx("input", {
-          value: form.tiktok || '',
-          onChange: set('tiktok'),
-          placeholder: "@handle",
-          className: "input"
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "Segment"
-        }), /*#__PURE__*/_jsx("input", {
-          value: form.segment || '',
-          onChange: set('segment'),
-          placeholder: "VIP, Lead...",
-          className: "input"
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        className: "col-span-2",
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "Notes"
-        }), /*#__PURE__*/_jsx("input", {
-          value: form.notes || '',
-          onChange: set('notes'),
-          placeholder: "Internal notes...",
-          className: "input"
-        })]
-      })]
-    }), /*#__PURE__*/_jsxs("div", {
-      className: "flex gap-3 justify-end mt-6",
-      children: [/*#__PURE__*/_jsx("button", {
-        onClick: onClose,
-        className: "btn-secondary",
-        children: "Cancel"
-      }), /*#__PURE__*/_jsx("button", {
-        onClick: handleSave,
-        disabled: loading,
-        className: "btn-primary",
-        children: loading ? /*#__PURE__*/_jsx(Spinner, {
-          size: 14
-        }) : isEdit ? 'Update Contact' : 'Create Contact'
-      })]
-    })]
-  });
+
+  return (
+    <Modal isOpen={true} onClose={onClose} title={isEdit ? 'Edit Contact' : 'New Contact'} size="lg">
+      <div className="space-y-6">
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="col-span-2">
+            <label className="label">Full Name *</label>
+            <input className="input" value={form.name || ''} onChange={set('name')} />
+          </div>
+
+          <div>
+            <label className="label">Company</label>
+            <input className="input" value={form.company || ''} onChange={set('company')} />
+          </div>
+
+          <div>
+            <label className="label">Email</label>
+            <input className="input" value={form.email || ''} onChange={set('email')} />
+          </div>
+
+          <div>
+            <label className="label">Phone</label>
+            <input className="input" value={form.phone || ''} onChange={set('phone')} />
+          </div>
+
+          <div>
+            <label className="label">WhatsApp</label>
+            <input className="input" value={form.whatsapp || ''} onChange={set('whatsapp')} />
+          </div>
+
+          <div>
+            <label className="label">Instagram</label>
+            <input className="input" value={form.instagram || ''} onChange={set('instagram')} />
+          </div>
+
+          <div>
+            <label className="label">Facebook</label>
+            <input className="input" value={form.facebook || ''} onChange={set('facebook')} />
+          </div>
+
+          <div>
+            <label className="label">TikTok</label>
+            <input className="input" value={form.tiktok || ''} onChange={set('tiktok')} />
+          </div>
+
+          <div className="col-span-2">
+            <label className="label">Segment</label>
+            <input className="input" value={form.segment || ''} onChange={set('segment')} />
+          </div>
+
+          <div className="col-span-2">
+            <label className="label">Notes</label>
+            <input className="input" value={form.notes || ''} onChange={set('notes')} />
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-3">
+          <button className="btn-secondary" onClick={onClose}>
+            Cancel
+          </button>
+
+          <button className="btn-primary" onClick={handleSave} disabled={loading}>
+            {loading ? <Spinner size={14} /> : isEdit ? 'Update' : 'Create'}
+          </button>
+        </div>
+      </div>
+    </Modal>
+  );
 }
+
 export default function Contacts() {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [search, setSearch] = useState('');
+
   const [showModal, setShowModal] = useState(false);
   const [editContact, setEditContact] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+
   const fetchContacts = useCallback(async () => {
     setLoading(true);
+
     try {
       const res = await contactsAPI.getAll({
         page,
         limit: 20,
         search
       });
+
       const data = res.data?.data || [];
       setContacts(Array.isArray(data) ? data : []);
       setPages(res.data?.pagination?.pages || 1);
     } catch (err) {
-      console.error("Failed to fetch contacts:", err);
+      toast.error('Failed to load contacts');
       setContacts([]);
-      toast.error("Failed to load contacts. Please check your connection.");
     } finally {
       setLoading(false);
     }
   }, [page, search]);
+
   useEffect(() => {
     fetchContacts();
   }, [fetchContacts]);
-  const handleDelete = async () => {
-    if (!deleteId) return;
-    try {
-      await contactsAPI.delete(deleteId);
-      toast.success('Contact deleted successfully');
-      fetchContacts();
-    } catch {
-      toast.error('Failed to delete contact');
-    } finally {
-      setDeleteId(null);
-    }
-  };
-  const handleImport = async e => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const fd = new FormData();
-    fd.append('file', file);
-    try {
-      await contactsAPI.import(fd);
-      toast.success('Contacts imported successfully!');
-      fetchContacts();
-    } catch {
-      toast.error('Import failed');
-    } finally {
-      e.target.value = '';
-    }
-  };
-  const rows = useMemo(() => contacts.map(c => [/*#__PURE__*/_jsxs("div", {
-    children: [/*#__PURE__*/_jsx("p", {
-      className: "font-medium text-white",
-      children: c.name
-    }), c.company && /*#__PURE__*/_jsx("p", {
-      className: "text-xs text-brand-muted",
-      children: c.company
-    })]
-  }), /*#__PURE__*/_jsx("span", {
-    className: "text-xs font-mono text-brand-muted",
-    children: c.phone || '—'
-  }), /*#__PURE__*/_jsx("span", {
-    className: "text-xs font-mono text-emerald-400",
-    children: c.whatsapp || '—'
-  }), /*#__PURE__*/_jsx("span", {
-    className: "text-xs text-blue-400",
-    children: c.facebook || '—'
-  }), /*#__PURE__*/_jsx("span", {
-    className: "text-xs text-pink-400",
-    children: c.instagram || '—'
-  }), /*#__PURE__*/_jsx("span", {
-    className: "text-xs text-purple-400",
-    children: c.tiktok || '—'
-  }), c.segment ? /*#__PURE__*/_jsx("span", {
-    className: "badge badge-purple",
-    children: c.segment
-  }) : /*#__PURE__*/_jsx("span", {
-    className: "text-brand-muted text-xs",
-    children: "\u2014"
-  }), /*#__PURE__*/_jsxs("div", {
-    className: "flex items-center gap-1",
-    children: [/*#__PURE__*/_jsx("button", {
-      onClick: () => {
-        setEditContact(c);
-        setShowModal(true);
-      },
-      className: "p-1.5 rounded hover:bg-primary-500/20 text-brand-muted hover:text-primary-400 transition-colors",
-      children: /*#__PURE__*/_jsx(Edit2, {
-        size: 13
-      })
-    }), /*#__PURE__*/_jsx("button", {
-      onClick: () => setDeleteId(c._id),
-      className: "p-1.5 rounded hover:bg-red-500/20 text-brand-muted hover:text-red-400 transition-colors",
-      children: /*#__PURE__*/_jsx(Trash2, {
-        size: 13
-      })
-    })]
-  })]), [contacts]);
-  return /*#__PURE__*/_jsxs(_Fragment, {
-    children: [/*#__PURE__*/_jsx(Header, {
-      title: "Contacts",
-      subtitle: "Manage all your contacts across platforms"
-    }), /*#__PURE__*/_jsxs("div", {
-      className: "p-6 space-y-4 animate-fade-in",
-      children: [/*#__PURE__*/_jsxs("div", {
-        className: "flex flex-wrap items-center gap-3 justify-between",
-        children: [/*#__PURE__*/_jsxs("div", {
-          className: "relative flex-1 max-w-xs",
-          children: [/*#__PURE__*/_jsx(Search, {
-            size: 14,
-            className: "absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted"
-          }), /*#__PURE__*/_jsx("input", {
-            value: search,
-            onChange: e => {
-              setSearch(e.target.value);
-              setPage(1);
-            },
-            placeholder: "Search contacts\u2026",
-            className: "input pl-9"
-          })]
-        }), /*#__PURE__*/_jsxs("div", {
-          className: "flex items-center gap-2",
-          children: [/*#__PURE__*/_jsxs("label", {
-            className: "btn-secondary cursor-pointer",
-            children: [/*#__PURE__*/_jsx(Upload, {
-              size: 14
-            }), " Import CSV", /*#__PURE__*/_jsx("input", {
-              type: "file",
-              accept: ".csv,.xlsx",
-              className: "hidden",
-              onChange: handleImport
-            })]
-          }), /*#__PURE__*/_jsxs("button", {
-            onClick: () => contactsAPI.exportCSV(),
-            className: "btn-secondary",
-            children: [/*#__PURE__*/_jsx(Download, {
-              size: 14
-            }), " Export"]
-          }), /*#__PURE__*/_jsxs("button", {
-            onClick: () => {
-              setEditContact(null);
-              setShowModal(true);
-            },
-            className: "btn-primary",
-            children: [/*#__PURE__*/_jsx(Plus, {
-              size: 14
-            }), " New Contact"]
-          })]
-        })]
-      }), /*#__PURE__*/_jsx("div", {
-        className: "flex gap-3 flex-wrap",
-        children: PLATFORMS.map(p => /*#__PURE__*/_jsxs("div", {
-          className: "card px-3 py-2",
-          children: [/*#__PURE__*/_jsx("p", {
-            className: `text-xs font-medium ${p.color}`,
-            children: p.label
-          }), /*#__PURE__*/_jsx("p", {
-            className: "text-lg font-display font-bold text-white",
-            children: contacts.filter(c => !!c[p.key]).length
-          })]
-        }, p.key))
-      }), /*#__PURE__*/_jsxs("div", {
-        className: "card overflow-hidden",
-        children: [/*#__PURE__*/_jsx(Table, {
-          headers: ['Name', 'Phone', 'WhatsApp', 'Facebook', 'Instagram', 'TikTok', 'Segment', 'Actions'],
-          rows: rows,
-          loading: loading
-        }), !loading && contacts.length === 0 && /*#__PURE__*/_jsx(EmptyState, {
-          icon: Phone,
-          title: "No contacts yet",
-          description: "Create your first contact or import from CSV",
-          action: /*#__PURE__*/_jsxs("button", {
-            onClick: () => setShowModal(true),
-            className: "btn-primary",
-            children: [/*#__PURE__*/_jsx(Plus, {
-              size: 14
-            }), " New Contact"]
-          })
-        }), /*#__PURE__*/_jsx("div", {
-          className: "px-4 pb-4",
-          children: /*#__PURE__*/_jsx(Pagination, {
-            page: page,
-            pages: pages,
-            onPageChange: setPage
-          })
-        })]
-      })]
-    }), showModal && /*#__PURE__*/_jsx(ContactModal, {
-      contact: editContact,
-      onClose: () => {
-        setShowModal(false);
-        setEditContact(null);
-      },
-      onSave: fetchContacts
-    }), /*#__PURE__*/_jsx(ConfirmDialog, {
-      isOpen: !!deleteId,
-      onClose: () => setDeleteId(null),
-      onConfirm: handleDelete,
-      title: "Delete Contact",
-      message: "Are you sure? This action cannot be undone."
-    })]
-  });
+
+  const stats = useMemo(() => ({
+    total: contacts.length,
+    whatsapp: contacts.filter(c => c.whatsapp).length,
+    instagram: contacts.filter(c => c.instagram).length,
+    segmented: contacts.filter(c => c.segment).length
+  }), [contacts]);
+
+  const rows = useMemo(() =>
+    contacts.map(c => ([
+      <div>
+        <p className="font-medium text-white">{c.name}</p>
+        {c.company && <p className="text-xs text-brand-muted">{c.company}</p>}
+      </div>,
+
+      c.phone || '—',
+      c.whatsapp || '—',
+      c.instagram || '—',
+      c.facebook || '—',
+      c.tiktok || '—',
+
+      c.segment ? (
+        <span className="badge badge-purple">{c.segment}</span>
+      ) : (
+        '—'
+      ),
+
+      <div className="flex gap-2">
+        <button
+          onClick={() => {
+            setEditContact(c);
+            setShowModal(true);
+          }}
+          className="p-2 rounded hover:bg-primary-500/20"
+        >
+          <Edit2 size={14} />
+        </button>
+
+        <button
+          onClick={() => setDeleteId(c._id)}
+          className="p-2 rounded hover:bg-red-500/20"
+        >
+          <Trash2 size={14} />
+        </button>
+      </div>
+    ])), [contacts]
+  );
+
+  return (
+    <_Fragment>
+
+      <Header
+        title="Contacts"
+        subtitle="Manage and organize your audience"
+      />
+
+      <div className="p-6 space-y-6">
+
+        {/* KPI ROW */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <StatCard label="Total Contacts" value={stats.total} icon={Users} color="blue" />
+          <StatCard label="WhatsApp" value={stats.whatsapp} icon={Smartphone} color="green" />
+          <StatCard label="Instagram" value={stats.instagram} icon={Users} color="purple" />
+          <StatCard label="Segmented" value={stats.segmented} icon={Users} color="yellow" />
+        </div>
+
+        {/* HEADER ACTIONS */}
+        <div className="flex flex-col lg:flex-row gap-3 lg:items-center justify-between">
+
+          <div className="relative w-full lg:max-w-sm">
+            <Search size={14} className="absolute left-3 top-3 text-brand-muted" />
+            <input
+              className="input pl-9"
+              placeholder="Search contacts..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+            />
+          </div>
+
+          <div className="flex gap-2">
+            <button className="btn-secondary">
+              <Upload size={14} /> Import
+            </button>
+
+            <button className="btn-secondary">
+              <Download size={14} /> Export
+            </button>
+
+            <button
+              className="btn-primary"
+              onClick={() => {
+                setEditContact(null);
+                setShowModal(true);
+              }}
+            >
+              <Plus size={14} /> Add Contact
+            </button>
+          </div>
+        </div>
+
+        {/* TABLE */}
+        <div className="card overflow-hidden">
+          <Table
+            headers={[
+              'Name',
+              'Phone',
+              'WhatsApp',
+              'Instagram',
+              'Facebook',
+              'TikTok',
+              'Segment',
+              'Actions'
+            ]}
+            rows={rows}
+            loading={loading}
+          />
+
+          {!loading && contacts.length === 0 && (
+            <EmptyState
+              icon={Phone}
+              title="No contacts found"
+              description="Start by adding your first contact"
+              action={
+                <button
+                  className="btn-primary"
+                  onClick={() => setShowModal(true)}
+                >
+                  <Plus size={14} /> Add Contact
+                </button>
+              }
+            />
+          )}
+
+          <div className="px-4 pb-4">
+            <Pagination
+              page={page}
+              pages={pages}
+              onPageChange={setPage}
+            />
+          </div>
+        </div>
+      </div>
+
+      {showModal && (
+        <ContactModal
+          contact={editContact}
+          onClose={() => {
+            setShowModal(false);
+            setEditContact(null);
+          }}
+          onSave={fetchContacts}
+        />
+      )}
+
+      <ConfirmDialog
+        isOpen={!!deleteId}
+        onClose={() => setDeleteId(null)}
+        onConfirm={async () => {
+          if (!deleteId) return;
+          await contactsAPI.delete(deleteId);
+          toast.success('Deleted');
+          fetchContacts();
+        }}
+        title="Delete Contact"
+        message="This action cannot be undone"
+      />
+    </_Fragment>
+  );
 }
