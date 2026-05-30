@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CheckCircle } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
-import { SectionBadge, SectionTitle } from "./UI/SectionTitle";
+import { SectionBadge, SectionTitle } from "./ui/SectionTitle";
 import { GradientBlur } from "./ui/GradientBlur";
 import { pricingPlans } from "../data/pricing";
 
