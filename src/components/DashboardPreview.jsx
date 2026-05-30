@@ -19,7 +19,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import { useTheme } from "../context/ThemeContext";
-import { SectionBadge, SectionTitle } from "./UI/SectionTitle";
+import { SectionBadge, SectionTitle } from "./ui/SectionTitle";
 import { GradientBlur } from "./ui/GradientBlur";
 import { chartData } from "../data/features";
 
