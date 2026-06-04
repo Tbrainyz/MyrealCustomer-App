@@ -5,260 +5,132 @@ import { Table, Modal, ConfirmDialog, EmptyState, Pagination, Spinner } from '..
 import { expensesAPI } from '../api';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-const CATS = ['Operations', 'Marketing', 'Salaries', 'Utilities', 'Rent', 'Transport', 'Equipment', 'Software', 'Other'];
-function ExpenseModal({
-  expense,
-  onClose,
-  onSave
-}) {
+
+const CATS = ['Operations','Marketing','Salaries','Utilities','Rent','Transport','Equipment','Software','Other'];
+
+function ExpenseModal({ expense, onClose, onSave }) {
   const [form, setForm] = useState({
     description: expense?.description || '',
     amount: expense?.amount || '',
     category: expense?.category || 'Operations',
-    date: expense?.date?.slice(0, 10) || new Date().toISOString().slice(0, 10)
+    date: expense?.date?.slice(0, 10) || new Date().toISOString().slice(0, 10),
   });
   const [loading, setLoading] = useState(false);
   const isEdit = !!expense?._id;
+
   const handleSave = async () => {
     if (!form.description || !form.amount) return toast.error('Description and Amount are required');
     setLoading(true);
     try {
-      if (isEdit) {
-        await expensesAPI.update(expense._id, form);
-        toast.success('Expense updated successfully');
-      } else {
-        await expensesAPI.create(form);
-        toast.success('Expense created successfully');
-      }
-      onSave();
-      onClose();
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to save expense');
-    } finally {
-      setLoading(false);
-    }
+      if (isEdit) { await expensesAPI.update(expense._id, form); toast.success('Expense updated'); }
+      else { await expensesAPI.create(form); toast.success('Expense created'); }
+      onSave(); onClose();
+    } catch (err) { toast.error(err.response?.data?.message || 'Failed to save expense'); }
+    finally { setLoading(false); }
   };
-  return /*#__PURE__*/_jsxs(Modal, {
-    isOpen: true,
-    onClose: onClose,
-    title: isEdit ? 'Edit Expense' : 'New Expense',
-    size: "sm",
-    children: [/*#__PURE__*/_jsxs("div", {
-      className: "space-y-4",
-      children: [/*#__PURE__*/_jsxs("div", {
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "Description *"
-        }), /*#__PURE__*/_jsx("input", {
-          value: form.description,
-          onChange: e => setForm(f => ({
-            ...f,
-            description: e.target.value
-          })),
-          className: "input",
-          placeholder: "e.g. Office rent"
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "Amount (\u20A6) *"
-        }), /*#__PURE__*/_jsx("input", {
-          type: "number",
-          value: form.amount,
-          onChange: e => setForm(f => ({
-            ...f,
-            amount: e.target.value
-          })),
-          className: "input",
-          placeholder: "0",
-          min: "0"
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "Category"
-        }), /*#__PURE__*/_jsx("select", {
-          value: form.category,
-          onChange: e => setForm(f => ({
-            ...f,
-            category: e.target.value
-          })),
-          className: "input",
-          children: CATS.map(c => /*#__PURE__*/_jsx("option", {
-            value: c,
-            children: c
-          }, c))
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        children: [/*#__PURE__*/_jsx("label", {
-          className: "label",
-          children: "Date"
-        }), /*#__PURE__*/_jsx("input", {
-          type: "date",
-          value: form.date,
-          onChange: e => setForm(f => ({
-            ...f,
-            date: e.target.value
-          })),
-          className: "input"
-        })]
-      })]
-    }), /*#__PURE__*/_jsxs("div", {
-      className: "flex gap-3 justify-end mt-6",
-      children: [/*#__PURE__*/_jsx("button", {
-        onClick: onClose,
-        className: "btn-secondary",
-        children: "Cancel"
-      }), /*#__PURE__*/_jsx("button", {
-        onClick: handleSave,
-        disabled: loading,
-        className: "btn-primary",
-        children: loading ? /*#__PURE__*/_jsx(Spinner, {
-          size: 14
-        }) : 'Save Expense'
-      })]
-    })]
-  });
+
+  return (
+    <Modal isOpen onClose={onClose} title={isEdit ? 'Edit Expense' : 'New Expense'} size="sm">
+      <div className="space-y-4">
+        <div><label className="label">Description *</label><input value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} className="input" placeholder="e.g. Office rent" /></div>
+        <div><label className="label">Amount (₦) *</label><input type="number" value={form.amount} onChange={e => setForm(f => ({ ...f, amount: e.target.value }))} className="input" placeholder="0" min="0" /></div>
+        <div>
+          <label className="label">Category</label>
+          <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} className="input">
+            {CATS.map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </div>
+        <div><label className="label">Date</label><input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} className="input" /></div>
+      </div>
+      <div className="flex gap-3 justify-end mt-6">
+        <button onClick={onClose} className="btn-secondary">Cancel</button>
+        <button onClick={handleSave} disabled={loading} className="btn-primary">{loading ? <Spinner size={14} /> : 'Save Expense'}</button>
+      </div>
+    </Modal>
+  );
 }
+
 export default function Expenses() {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
-  const [showModal, setShowModal] = useState(false);
-  const [editExpense, setEditExpense] = useState(null);
-  const [deleteId, setDeleteId] = useState(null);
+  const [modal, setModal] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [catFilter, setCatFilter] = useState('all');
+
   const fetchExpenses = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await expensesAPI.getAll({
-        page
-      });
+      const res = await expensesAPI.getAll({ page, limit: 20, category: catFilter !== 'all' ? catFilter : undefined });
       const data = res.data?.data || [];
       setExpenses(Array.isArray(data) ? data : []);
       setPages(res.data?.pagination?.pages || 1);
-    } catch (err) {
-      console.error("Failed to fetch expenses:", err);
-      setExpenses([]);
-      toast.error("Failed to load expenses");
-    } finally {
-      setLoading(false);
-    }
-  }, [page]);
-  useEffect(() => {
-    fetchExpenses();
-  }, [fetchExpenses]);
-  const handleDelete = async () => {
-    if (!deleteId) return;
-    try {
-      await expensesAPI.delete(deleteId);
-      toast.success('Expense deleted successfully');
-      fetchExpenses();
-    } catch {
-      toast.error('Failed to delete expense');
-    } finally {
-      setDeleteId(null);
-    }
+    } catch { setExpenses([]); }
+    finally { setLoading(false); }
+  }, [page, catFilter]);
+
+  useEffect(() => { fetchExpenses(); }, [fetchExpenses]);
+
+  const total = useMemo(() => expenses.reduce((s, e) => s + Number(e.amount || 0), 0), [expenses]);
+
+  const handleDelete = async (id) => {
+    try { await expensesAPI.delete(id); toast.success('Expense deleted'); fetchExpenses(); }
+    catch { toast.error('Failed to delete'); }
   };
-  const total = useMemo(() => expenses.reduce((sum, exp) => sum + Number(exp.amount || 0), 0), [expenses]);
-  const rows = useMemo(() => expenses.map(e => [/*#__PURE__*/_jsx("span", {
-    className: "text-white font-medium",
-    children: e.description
-  }), /*#__PURE__*/_jsxs("span", {
-    className: "font-display font-semibold text-red-400",
-    children: ["\u20A6", Number(e.amount).toLocaleString()]
-  }), /*#__PURE__*/_jsx("span", {
-    className: "badge badge-blue",
-    children: e.category
-  }), /*#__PURE__*/_jsx("span", {
-    className: "text-xs text-brand-muted",
-    children: format(new Date(e.date), 'MMM d, yyyy')
-  }), /*#__PURE__*/_jsxs("div", {
-    className: "flex gap-1",
-    children: [/*#__PURE__*/_jsx("button", {
-      onClick: () => {
-        setEditExpense(e);
-        setShowModal(true);
-      },
-      className: "p-1.5 rounded hover:bg-primary-500/20 text-brand-muted hover:text-primary-400",
-      children: /*#__PURE__*/_jsx(Edit2, {
-        size: 13
-      })
-    }), /*#__PURE__*/_jsx("button", {
-      onClick: () => setDeleteId(e._id),
-      className: "p-1.5 rounded hover:bg-red-500/20 text-brand-muted hover:text-red-400",
-      children: /*#__PURE__*/_jsx(Trash2, {
-        size: 13
-      })
-    })]
-  })]), [expenses]);
-  return /*#__PURE__*/_jsxs(_Fragment, {
-    children: [/*#__PURE__*/_jsx(Header, {
-      title: "Expenses",
-      subtitle: "Track business expenses and costs"
-    }), /*#__PURE__*/_jsxs("div", {
-      className: "p-6 animate-fade-in space-y-4",
-      children: [/*#__PURE__*/_jsxs("div", {
-        className: "flex items-center justify-between flex-wrap gap-3",
-        children: [/*#__PURE__*/_jsxs("div", {
-          className: "card px-5 py-3",
-          children: [/*#__PURE__*/_jsx("p", {
-            className: "text-xs text-brand-muted",
-            children: "Total Expenses"
-          }), /*#__PURE__*/_jsxs("p", {
-            className: "text-2xl font-display font-bold text-red-400",
-            children: ["\u20A6", total.toLocaleString()]
-          })]
-        }), /*#__PURE__*/_jsxs("button", {
-          onClick: () => {
-            setEditExpense(null);
-            setShowModal(true);
-          },
-          className: "btn-primary",
-          children: [/*#__PURE__*/_jsx(Plus, {
-            size: 14
-          }), " Add Expense"]
-        })]
-      }), /*#__PURE__*/_jsxs("div", {
-        className: "card overflow-hidden",
-        children: [/*#__PURE__*/_jsx(Table, {
-          headers: ['Description', 'Amount', 'Category', 'Date', 'Actions'],
-          rows: rows,
-          loading: loading
-        }), !loading && expenses.length === 0 && /*#__PURE__*/_jsx(EmptyState, {
-          icon: Wallet,
-          title: "No expenses recorded",
-          description: "Start tracking your business expenses",
-          action: /*#__PURE__*/_jsxs("button", {
-            onClick: () => setShowModal(true),
-            className: "btn-primary",
-            children: [/*#__PURE__*/_jsx(Plus, {
-              size: 14
-            }), " Add Expense"]
-          })
-        }), /*#__PURE__*/_jsx("div", {
-          className: "px-4 pb-4",
-          children: /*#__PURE__*/_jsx(Pagination, {
-            page: page,
-            pages: pages,
-            onPageChange: setPage
-          })
-        })]
-      })]
-    }), showModal && /*#__PURE__*/_jsx(ExpenseModal, {
-      expense: editExpense,
-      onClose: () => {
-        setShowModal(false);
-        setEditExpense(null);
-      },
-      onSave: fetchExpenses
-    }), /*#__PURE__*/_jsx(ConfirmDialog, {
-      isOpen: !!deleteId,
-      onClose: () => setDeleteId(null),
-      onConfirm: handleDelete,
-      title: "Delete Expense",
-      message: "Are you sure you want to delete this expense?"
-    })]
-  });
+
+  const rows = expenses.map(e => [
+    <span className="text-slate-800 dark:text-white font-medium">{e.description}</span>,
+    <span className="badge badge-blue">{e.category}</span>,
+    <span className="text-slate-700 dark:text-white font-semibold">₦{Number(e.amount).toLocaleString()}</span>,
+    <span className="text-slate-500 dark:text-brand-muted">{e.date ? format(new Date(e.date), 'MMM d, yyyy') : '—'}</span>,
+    <div className="flex gap-2">
+      <button onClick={() => setModal(e)} className="p-1.5 rounded-lg text-slate-400 hover:text-primary-500 hover:bg-primary-500/10 transition-all"><Edit2 size={14} /></button>
+      <button onClick={() => setDeleteTarget(e._id)} className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all"><Trash2 size={14} /></button>
+    </div>
+  ]);
+
+  return (
+    <>
+      <Header title="Expenses" subtitle="Track your business spending" />
+      <div className="p-6 space-y-6 animate-fade-in">
+        {/* KPIs */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <div className="admin-stat-card p-5">
+            <Wallet size={18} className="text-red-400 mb-3" />
+            <p className="text-2xl font-bold text-slate-900 dark:text-white">₦{total.toLocaleString()}</p>
+            <p className="text-xs text-brand-muted mt-0.5">Total Expenses (this page)</p>
+          </div>
+          <div className="admin-stat-card p-5">
+            <p className="text-2xl font-bold text-slate-900 dark:text-white">{expenses.length}</p>
+            <p className="text-xs text-brand-muted mt-0.5">Records Shown</p>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="admin-table">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 border-b border-slate-200 dark:border-brand-border">
+            <h2 className="section-title">All Expenses</h2>
+            <div className="flex gap-2 flex-wrap">
+              <select value={catFilter} onChange={e => { setCatFilter(e.target.value); setPage(1); }} className="input !py-1.5 !text-sm w-auto">
+                <option value="all">All Categories</option>
+                {CATS.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+              <button onClick={() => setModal({})} className="btn-primary gap-2"><Plus size={15} /> Add Expense</button>
+            </div>
+          </div>
+          <div className="p-4">
+            {expenses.length === 0 && !loading
+              ? <EmptyState icon={Wallet} title="No expenses yet" description="Add your first expense to start tracking spending." action={<button onClick={() => setModal({})} className="btn-primary gap-2"><Plus size={14} /> Add Expense</button>} />
+              : <Table headers={['Description', 'Category', 'Amount', 'Date', '']} rows={rows} loading={loading} />
+            }
+            <Pagination page={page} pages={pages} onPageChange={setPage} />
+          </div>
+        </div>
+      </div>
+
+      {modal !== null && <ExpenseModal expense={modal?._id ? modal : undefined} onClose={() => setModal(null)} onSave={fetchExpenses} />}
+      <ConfirmDialog isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={() => handleDelete(deleteTarget)} title="Delete Expense" message="Are you sure you want to delete this expense?" confirmText="Delete" />
+    </>
+  );
 }

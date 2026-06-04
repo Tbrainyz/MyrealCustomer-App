@@ -274,7 +274,7 @@ export default function Inventory() {
           <span className="badge badge-blue">{p.category || "N/A"}</span>,
 
           <div className="flex items-center gap-2">
-            <span className={`font-bold ${isLow ? "text-red-400" : "text-white"}`}>
+            <span className={`font-bold ${isLow ? "text-red-400" : "text-slate-900 dark:text-white"}`}>
               {p.quantity}
             </span>
             {isLow && <AlertTriangle size={14} className="text-yellow-400" />}

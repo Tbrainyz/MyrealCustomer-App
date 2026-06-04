@@ -1,187 +1,122 @@
-import React, { useState } from "react";
-import {
-  Eye,
-  EyeOff,
-  Zap,
-  Lock,
-  ShieldCheck,
-  CheckCircle2,
-} from "lucide-react";
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Eye, EyeOff, Lock, ShieldCheck, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import toast from 'react-hot-toast';
+import AuthLayout from '../layouts/AuthLayout';
+import { AuthInput, AuthButton } from '../components/ui/AuthInput';
 
-const CreatePassword = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+function strengthInfo(pwd) {
+  if (!pwd) return null;
+  if (pwd.length < 6) return { label: 'Weak', pct: '30%', cls: 'bg-red-500' };
+  if (pwd.match(/[A-Z]/) && pwd.match(/[0-9]/) && pwd.length >= 8) return { label: 'Strong', pct: '90%', cls: 'bg-emerald-500' };
+  return { label: 'Medium', pct: '60%', cls: 'bg-amber-400' };
+}
 
+function LeftContent() {
+  const { dark } = useTheme();
   return (
-    <div className="min-h-screen bg-[#050816] text-white flex items-center justify-center overflow-hidden relative px-6 py-10">
-      {/* Background Glow */}
-      <div className="absolute top-[-120px] left-[-120px] w-[350px] h-[350px] bg-cyan-500/20 blur-3xl rounded-full" />
-      <div className="absolute bottom-[-140px] right-[-120px] w-[400px] h-[400px] bg-violet-500/20 blur-3xl rounded-full" />
-      <div className="absolute top-[45%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-fuchsia-500/10 blur-3xl rounded-full" />
-
-      <div className="w-full max-w-6xl grid lg:grid-cols-2 overflow-hidden rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-2xl shadow-2xl relative z-10">
-        {/* Left Section */}
-        <div className="hidden lg:flex flex-col justify-between p-12 border-r border-white/10 bg-gradient-to-br from-cyan-500/10 via-transparent to-violet-500/10">
-          <div>
-            <div className="flex items-center gap-4 mb-10">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-[10px] bg-gradient-to-br from-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                <Zap size={18} className="text-white" />
-              </div>
-
-              <div>
-                <h1 className="text-2xl font-bold tracking-wide">
-                  My Real Customer App
-                </h1>
-                <p className="text-sm text-gray-400">
-                  Advanced Account Security
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              <h2 className="text-5xl font-bold leading-tight max-w-xl">
-                Create a stronger new password.
-              </h2>
-
-              <p className="text-lg text-gray-300 leading-relaxed max-w-lg">
-                Secure your account with a powerful password designed to protect
-                your digital workspace and sensitive information.
-              </p>
-            </div>
+    <div className="space-y-7">
+      <div>
+        <h2 className={`text-[2.4rem] font-bold leading-[1.15] mb-4 ${dark ? 'text-white' : 'text-slate-900'}`}>
+          Create a stronger{' '}
+          <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">new password.</span>
+        </h2>
+        <p className={`text-base leading-relaxed ${dark ? 'text-slate-400' : 'text-slate-500'}`}>
+          Secure your account with a powerful password designed to protect your workspace.
+        </p>
+      </div>
+      <div className="space-y-3">
+        {['Minimum 8 characters', 'At least one uppercase letter', 'At least one number', 'Avoid reusing old passwords'].map(tip => (
+          <div key={tip} className="flex items-center gap-3">
+            <CheckCircle2 size={15} className={dark ? 'text-indigo-400' : 'text-indigo-500'} />
+            <p className={`text-sm ${dark ? 'text-slate-400' : 'text-slate-500'}`}>{tip}</p>
           </div>
-
-          <div className="space-y-5 mt-12">
-            <div className="flex items-start gap-4 p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
-              <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400">
-                <ShieldCheck size={24} />
-              </div>
-
-              <div>
-                <h3 className="font-semibold text-lg">Secure Encryption</h3>
-                <p className="text-gray-400 text-sm mt-1">
-                  Your credentials are protected with enterprise-level security.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
-              <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-400">
-                <CheckCircle2 size={24} />
-              </div>
-
-              <div>
-                <h3 className="font-semibold text-lg">Password Protection</h3>
-                <p className="text-gray-400 text-sm mt-1">
-                  Use a combination of letters, numbers, and symbols for maximum
-                  protection.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Section */}
-        <div className="flex items-center justify-center p-8 sm:p-12">
-          <div className="w-full max-w-md">
-            <div className="mb-8">
-              <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-cyan-400/20 to-violet-500/20 border border-white/10 flex items-center justify-center mb-6 shadow-lg shadow-cyan-500/10">
-                <Lock size={36} className="text-cyan-400" />
-              </div>
-
-              <h2 className="text-4xl font-bold mb-3">Create New Password</h2>
-
-              <p className="text-gray-400 leading-relaxed">
-                Your new password must be unique and different from previously
-                used passwords.
-              </p>
-            </div>
-
-            <form className="space-y-6">
-              {/* New Password */}
-              <div>
-                <label className="block text-sm text-gray-300 mb-2">
-                  New Password
-                </label>
-
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter new password"
-                    className="w-full px-5 py-4 pr-14 rounded-2xl bg-white/5 border border-white/10 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 outline-none transition-all duration-300 placeholder:text-gray-500"
-                  />
-
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-              </div>
-
-              {/* Confirm Password */}
-              <div>
-                <label className="block text-sm text-gray-300 mb-2">
-                  Confirm Password
-                </label>
-
-                <div className="relative">
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirm new password"
-                    className="w-full px-5 py-4 pr-14 rounded-2xl bg-white/5 border border-white/10 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/30 outline-none transition-all duration-300 placeholder:text-gray-500"
-                  />
-
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition"
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff size={20} />
-                    ) : (
-                      <Eye size={20} />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* Password Strength */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Password Strength</span>
-                  <span className="text-cyan-400 font-medium">Strong</span>
-                </div>
-
-                <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-                  <div className="w-[85%] h-full bg-gradient-to-r from-cyan-400 to-violet-500 rounded-full"></div>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-4 rounded-2xl bg-gradient-to-r from-cyan-400 to-violet-500 text-black font-semibold hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-cyan-500/20"
-              >
-                Reset Password
-              </button>
-            </form>
-
-            <div className="mt-8 p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
-              <p className="text-sm text-gray-400 leading-relaxed">
-                Make sure your password contains at least 8 characters,
-                including uppercase letters, numbers, and symbols.
-              </p>
-            </div>
-
-            <p className="text-center text-gray-500 text-sm mt-8">
-              Secured with enterprise-level authentication and encryption.
-            </p>
-          </div>
+        ))}
+      </div>
+      <div className={`p-5 rounded-2xl border ${dark ? 'bg-white/[0.04] border-white/10' : 'bg-white border-slate-100 shadow-sm'}`}>
+        <div className="flex items-start gap-3">
+          <ShieldCheck size={20} className="text-cyan-500 mt-0.5 shrink-0" />
+          <p className={`text-sm leading-relaxed ${dark ? 'text-slate-400' : 'text-slate-500'}`}>
+            Your new password is encrypted with AES-256 and never stored in plain text.
+          </p>
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default CreatePassword;
+export default function ResetPassword() {
+  const { dark } = useTheme();
+  const navigate = useNavigate();
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [pwd, setPwd] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [loading, setLoading] = useState(false);
+  const strength = strengthInfo(pwd);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (pwd !== confirm) return toast.error('Passwords do not match');
+    setLoading(true);
+    try {
+      await new Promise(r => setTimeout(r, 1000)); // replace with real API
+      toast.success('Password updated successfully!');
+      navigate('/login');
+    } catch {
+      toast.error('Failed to update password');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <AuthLayout leftContent={<LeftContent />}>
+      <div>
+        <Link to="/forgot-password" className={`inline-flex items-center gap-2 text-sm mb-8 transition-colors ${dark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'}`}>
+          <ArrowLeft size={16} /> Back
+        </Link>
+        <div className="mb-8">
+          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-5 ${dark ? 'bg-indigo-500/15' : 'bg-indigo-50'}`}>
+            <Lock size={24} className={dark ? 'text-indigo-400' : 'text-indigo-600'} />
+          </div>
+          <h2 className={`text-3xl font-bold mb-2 ${dark ? 'text-white' : 'text-slate-900'}`}>Reset Password</h2>
+          <p className={`text-sm ${dark ? 'text-slate-400' : 'text-slate-500'}`}>Set a strong, secure new password for your account.</p>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <AuthInput
+              label="New Password" type={showNew ? 'text' : 'password'} placeholder="Min. 8 characters" icon={Lock}
+              value={pwd} onChange={e => setPwd(e.target.value)}
+              rightIcon={showNew ? <EyeOff size={16} /> : <Eye size={16} />}
+              onRightIconClick={() => setShowNew(v => !v)} required
+            />
+            {strength && (
+              <div className="mt-2">
+                <div className={`h-1.5 rounded-full ${dark ? 'bg-white/10' : 'bg-slate-200'}`}>
+                  <div className={`h-full rounded-full transition-all duration-300 ${strength.cls}`} style={{ width: strength.pct }} />
+                </div>
+                <p className={`text-xs mt-1 ${dark ? 'text-slate-400' : 'text-slate-500'}`}>Strength: <span className="font-medium">{strength.label}</span></p>
+              </div>
+            )}
+          </div>
+          <div>
+            <AuthInput
+              label="Confirm Password" type={showConfirm ? 'text' : 'password'} placeholder="Re-enter new password" icon={Lock}
+              value={confirm} onChange={e => setConfirm(e.target.value)}
+              rightIcon={showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+              onRightIconClick={() => setShowConfirm(v => !v)} required
+            />
+            {confirm && pwd === confirm && (
+              <div className="flex items-center gap-2 text-sm text-emerald-500 mt-1.5">
+                <CheckCircle2 size={14} /> Passwords match
+              </div>
+            )}
+          </div>
+          <AuthButton loading={loading} type="submit">Set New Password</AuthButton>
+        </form>
+      </div>
+    </AuthLayout>
+  );
+}

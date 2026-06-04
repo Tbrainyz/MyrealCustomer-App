@@ -1,425 +1,241 @@
 /* ==========================================
-   ORBIX ADMIN THEME
-   Premium SaaS Dashboard Layer
+   ADMIN THEME — supports dark + light mode
 ========================================== */
 
+/* ---------- SHELL ---------- */
 .admin-shell {
   min-height: 100vh;
   position: relative;
+}
+
+/* dark shell */
+.dark .admin-shell {
   background:
-    radial-gradient(
-      circle at top right,
-      rgba(79,70,229,.12),
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at bottom left,
-      rgba(139,92,246,.10),
-      transparent 35%
-    ),
+    radial-gradient(circle at top right, rgba(79,70,229,.12), transparent 35%),
+    radial-gradient(circle at bottom left, rgba(139,92,246,.10), transparent 35%),
     #0f0f1a;
 }
 
-.admin-shell::before {
-  content: '';
+/* light shell */
+.light .admin-shell,
+:root:not(.dark) .admin-shell {
+  background:
+    radial-gradient(circle at top right, rgba(79,70,229,.05), transparent 35%),
+    radial-gradient(circle at bottom left, rgba(139,92,246,.04), transparent 35%),
+    #f4f5f9;
+}
 
+.dark .admin-shell::before {
+  content: '';
   position: fixed;
   inset: 0;
-
   background-image:
-    linear-gradient(
-      rgba(255,255,255,.03) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255,255,255,.03) 1px,
-      transparent 1px
-    );
-
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
   background-size: 50px 50px;
-
   pointer-events: none;
-
   opacity: .3;
 }
 
-.admin-main {
-  position: relative;
-  z-index: 10;
-}
+.admin-main { position: relative; z-index: 10; }
 
-/* ==========================================
-   HEADER
-========================================== */
-
-.admin-header {
-  position: sticky;
-  top: 16px;
-
-  margin: 16px 24px 0;
-
-  z-index: 40;
-
-  border-radius: 24px;
-
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-
-  background: rgba(255,255,255,.04);
-
-  border: 1px solid rgba(255,255,255,.08);
-
-  box-shadow:
-    0 8px 32px rgba(0,0,0,.25);
-}
-
-/* ==========================================
-   SIDEBAR
-========================================== */
-
+/* ---------- SIDEBAR ---------- */
 .admin-sidebar {
   margin: 12px;
-
   border-radius: 28px;
-
-  background: rgba(255,255,255,.04);
-
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-
-  border: 1px solid rgba(255,255,255,.08);
-
-  box-shadow:
-    0 10px 40px rgba(0,0,0,.30);
+  box-shadow: 0 10px 40px rgba(0,0,0,.20);
 }
 
+.dark .admin-sidebar {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.light .admin-sidebar,
+:root:not(.dark) .admin-sidebar {
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(0,0,0,.07);
+  box-shadow: 0 10px 40px rgba(0,0,0,.07);
+}
+
+/* ---------- NAV LINK ---------- */
 .admin-nav-link {
   position: relative;
-
   display: flex;
   align-items: center;
   gap: 12px;
-
-  padding: 12px 14px;
-
+  padding: 11px 14px;
   border-radius: 14px;
-
-  transition: all .25s ease;
+  transition: all .2s ease;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-.admin-nav-link:hover {
-  background: rgba(255,255,255,.05);
+.dark .admin-nav-link:hover { background: rgba(255,255,255,.05); transform: translateX(3px); }
+.light .admin-nav-link:hover,
+:root:not(.dark) .admin-nav-link:hover { background: rgba(79,70,229,.06); transform: translateX(3px); }
 
-  transform: translateX(4px);
-}
-
-.admin-nav-link.active {
-  background:
-    linear-gradient(
-      135deg,
-      rgba(79,70,229,.18),
-      rgba(99,102,241,.08)
-    );
-
+.dark .admin-nav-link.active {
+  background: linear-gradient(135deg, rgba(79,70,229,.18), rgba(99,102,241,.08));
   border: 1px solid rgba(79,70,229,.18);
+}
+.light .admin-nav-link.active,
+:root:not(.dark) .admin-nav-link.active {
+  background: linear-gradient(135deg, rgba(79,70,229,.10), rgba(99,102,241,.05));
+  border: 1px solid rgba(79,70,229,.15);
 }
 
 .admin-nav-link.active::before {
   content: '';
-
   position: absolute;
-
-  left: -8px;
-  top: 6px;
-  bottom: 6px;
-
+  left: -8px; top: 6px; bottom: 6px;
   width: 4px;
-
   border-radius: 999px;
-
-  background:
-    linear-gradient(
-      to bottom,
-      #4f46e5,
-      #06b6d4
-    );
+  background: linear-gradient(to bottom, #4f46e5, #06b6d4);
 }
 
-/* ==========================================
-   PAGE CONTAINER
-========================================== */
+/* ---------- PAGE / SECTION ---------- */
+.admin-page { padding: 24px; }
+.admin-section { margin-bottom: 24px; }
 
-.admin-page {
-  padding: 24px;
-}
-
-.admin-section {
-  margin-bottom: 24px;
-}
-
-/* ==========================================
-   CARDS
-========================================== */
-
+/* ---------- CARDS ---------- */
 .admin-card {
   position: relative;
-
   overflow: hidden;
-
   border-radius: 24px;
-
-  background: rgba(255,255,255,.04);
-
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-
-  border: 1px solid rgba(255,255,255,.08);
-
-  transition:
-    transform .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
 }
 
-.admin-card::before {
-  content: '';
-
-  position: absolute;
-
-  top: -120px;
-  right: -120px;
-
-  width: 260px;
-  height: 260px;
-
-  border-radius: 999px;
-
-  background:
-    radial-gradient(
-      rgba(79,70,229,.15),
-      transparent 70%
-    );
-
-  pointer-events: none;
+.dark .admin-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+}
+.light .admin-card,
+:root:not(.dark) .admin-card {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,.07);
+  box-shadow: 0 2px 12px rgba(0,0,0,.05);
 }
 
 .admin-card:hover {
-  transform: translateY(-4px);
-
+  transform: translateY(-3px);
   border-color: rgba(79,70,229,.25);
-
-  box-shadow:
-    0 20px 40px rgba(0,0,0,.30),
-    0 0 30px rgba(79,70,229,.10);
+  box-shadow: 0 16px 40px rgba(0,0,0,.15), 0 0 20px rgba(79,70,229,.08);
 }
 
-/* ==========================================
-   STAT CARDS
-========================================== */
-
+/* ---------- STAT CARDS ---------- */
 .admin-stat-card {
   position: relative;
-
   overflow: hidden;
-
   min-height: 140px;
-
   border-radius: 24px;
-
-  background: rgba(255,255,255,.04);
-
   backdrop-filter: blur(20px);
-
-  border: 1px solid rgba(255,255,255,.08);
-
   transition: all .25s ease;
 }
 
-.admin-stat-card:hover {
-  transform: translateY(-5px);
-
-  border-color: rgba(79,70,229,.25);
+.dark .admin-stat-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+}
+.light .admin-stat-card,
+:root:not(.dark) .admin-stat-card {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,.07);
+  box-shadow: 0 2px 12px rgba(0,0,0,.05);
 }
 
-.admin-stat-card::after {
-  content: '';
+.admin-stat-card:hover { transform: translateY(-4px); border-color: rgba(79,70,229,.25); }
 
-  position: absolute;
-  inset: 0;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(79,70,229,.08),
-      transparent
-    );
-
-  pointer-events: none;
-}
-
-/* ==========================================
-   TABLES
-========================================== */
-
+/* ---------- TABLES ---------- */
 .admin-table {
   overflow: hidden;
-
   border-radius: 24px;
-
-  background: rgba(255,255,255,.04);
-
   backdrop-filter: blur(20px);
-
-  border: 1px solid rgba(255,255,255,.08);
 }
+.dark .admin-table { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); }
+.light .admin-table,
+:root:not(.dark) .admin-table { background: #ffffff; border: 1px solid rgba(0,0,0,.07); box-shadow: 0 2px 12px rgba(0,0,0,.05); }
 
-.admin-table table {
-  width: 100%;
-}
+.admin-table table { width: 100%; }
+.dark .admin-table thead { background: rgba(255,255,255,.07); }
+.light .admin-table thead,
+:root:not(.dark) .admin-table thead { background: rgba(0,0,0,.025); }
+.admin-table th { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.admin-table tr { transition: all .2s ease; }
+/* Bolder row dividers in dark mode */
+.dark .admin-table tbody tr { border-bottom: 1px solid rgba(255,255,255,.10); }
+.dark .admin-table tbody tr:hover { background: rgba(255,255,255,.08); }
+.dark .admin-table thead tr { border-bottom: 1px solid rgba(255,255,255,.14); }
+.light .admin-table tbody tr,
+:root:not(.dark) .admin-table tbody tr { border-bottom: 1px solid rgba(0,0,0,.06); }
+.light .admin-table tbody tr:hover,
+:root:not(.dark) .admin-table tbody tr:hover { background: rgba(79,70,229,.04); }
 
-.admin-table thead {
-  background: rgba(255,255,255,.04);
-}
-
-.admin-table th {
-  font-size: 12px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-.admin-table tr {
-  transition: all .2s ease;
-}
-
-.admin-table tbody tr:hover {
-  background: rgba(255,255,255,.04);
-}
-
-/* ==========================================
-   INPUTS
-========================================== */
-
+/* ---------- INPUTS ---------- */
 .admin-input {
   width: 100%;
-
   border-radius: 14px;
-
-  background: rgba(255,255,255,.03);
-
-  border: 1px solid rgba(255,255,255,.08);
-
   padding: 12px 14px;
-
   transition: all .2s ease;
-}
-
-.admin-input:focus {
   outline: none;
-
-  border-color: #4f46e5;
-
-  box-shadow:
-    0 0 0 4px rgba(79,70,229,.15);
 }
+.dark .admin-input {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  color: #ffffff;
+}
+.light .admin-input,
+:root:not(.dark) .admin-input {
+  background: #f8f9fb;
+  border: 1px solid rgba(0,0,0,.10);
+  color: #1a1a2e;
+}
+.admin-input:focus { border-color: #4f46e5; box-shadow: 0 0 0 4px rgba(79,70,229,.15); }
 
-/* ==========================================
-   BUTTONS
-========================================== */
-
+/* ---------- BUTTONS ---------- */
 .admin-btn-primary {
-  border: none;
-
-  border-radius: 14px;
-
-  padding: 12px 18px;
-
-  color: white;
-  font-weight: 600;
-
-  background:
-    linear-gradient(
-      135deg,
-      #4f46e5,
-      #6366f1
-    );
-
-  box-shadow:
-    0 10px 25px rgba(79,70,229,.30);
-
-  transition: all .2s ease;
+  border: none; border-radius: 14px; padding: 12px 18px;
+  color: white; font-weight: 600;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  box-shadow: 0 10px 25px rgba(79,70,229,.30);
+  transition: all .2s ease; cursor: pointer;
 }
-
-.admin-btn-primary:hover {
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 14px 30px rgba(79,70,229,.40);
-}
+.admin-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(79,70,229,.40); }
 
 .admin-btn-secondary {
-  border-radius: 14px;
-
-  padding: 12px 18px;
-
+  border-radius: 14px; padding: 12px 18px;
+  transition: all .2s ease; cursor: pointer;
+}
+.dark .admin-btn-secondary {
   background: rgba(255,255,255,.05);
-
   border: 1px solid rgba(255,255,255,.08);
-
-  transition: all .2s ease;
+  color: #e2e2f0;
 }
-
-.admin-btn-secondary:hover {
-  background: rgba(255,255,255,.08);
+.light .admin-btn-secondary,
+:root:not(.dark) .admin-btn-secondary {
+  background: #f0f0f8;
+  border: 1px solid rgba(0,0,0,.08);
+  color: #444466;
 }
+.admin-btn-secondary:hover { opacity: .85; }
 
-/* ==========================================
-   BADGES
-========================================== */
-
+/* ---------- BADGES ---------- */
 .admin-badge {
-  display: inline-flex;
-  align-items: center;
-
-  border-radius: 999px;
-
-  padding: 4px 10px;
-
-  font-size: 12px;
-  font-weight: 600;
+  display: inline-flex; align-items: center;
+  border-radius: 999px; padding: 4px 10px;
+  font-size: 12px; font-weight: 600;
 }
+.admin-badge-success { background: rgba(16,185,129,.15); color: #34d399; }
+.admin-badge-danger  { background: rgba(239,68,68,.15);  color: #f87171; }
+.admin-badge-warning { background: rgba(245,158,11,.15); color: #fbbf24; }
 
-.admin-badge-success {
-  background: rgba(16,185,129,.15);
-  color: #34d399;
-}
-
-.admin-badge-danger {
-  background: rgba(239,68,68,.15);
-  color: #f87171;
-}
-
-.admin-badge-warning {
-  background: rgba(245,158,11,.15);
-  color: #fbbf24;
-}
-
-/* ==========================================
-   ANIMATIONS
-========================================== */
-
-.admin-fade-up {
-  animation: adminFadeUp .4s ease;
-}
-
+/* ---------- ANIMATIONS ---------- */
+.admin-fade-up { animation: adminFadeUp .4s ease; }
 @keyframes adminFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
 }

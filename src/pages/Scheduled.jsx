@@ -12,8 +12,6 @@ import {
 import { messagesAPI, contactsAPI } from '../api';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-
 /* ---------------- MOCK ---------------- */
 const MOCK_SCHEDULED = [
   {

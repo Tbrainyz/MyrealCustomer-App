@@ -4,8 +4,6 @@ import Header from '../components/layout/Header';
 import { messagesAPI, contactsAPI, templatesAPI } from '../api';
 import { Spinner, Modal } from '../components/ui';
 import toast from 'react-hot-toast';
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-
 const PLATFORMS = [
   {
     value: 'whatsapp',
@@ -305,7 +303,7 @@ export default function Compose() {
                   />
 
                   <div className="flex-1">
-                    <p className="text-sm text-white">{c.name}</p>
+                    <p className="text-sm text-slate-800 dark:text-white">{c.name}</p>
                     <p className="text-xs text-brand-muted">{c.company}</p>
                   </div>
 

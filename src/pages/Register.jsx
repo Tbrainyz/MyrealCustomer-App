@@ -1,190 +1,105 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authAPI } from '../api';
-import { Eye, EyeOff, ArrowRight, ShieldCheck, Sparkles, Zap } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { Eye, EyeOff, ArrowRight, ShieldCheck, Sparkles, Zap, Mail, Lock, User } from 'lucide-react';
 import toast from 'react-hot-toast';
+import AuthLayout from '../layouts/AuthLayout';
+import { AuthInput, AuthButton } from '../components/ui/AuthInput';
+
+const FEATURES = [
+  { icon: ShieldCheck, color: 'text-cyan-500',   bg: (d) => d ? 'bg-cyan-500/10'    : 'bg-cyan-50',    title: 'Enterprise Security',    desc: 'End-to-end encrypted infrastructure with advanced protection.' },
+  { icon: Sparkles,    color: 'text-violet-500',  bg: (d) => d ? 'bg-violet-500/10'  : 'bg-violet-50',  title: 'AI-Powered Experience',  desc: 'Unlock powerful automation tools built for modern teams.' },
+  { icon: Zap,         color: 'text-indigo-500',  bg: (d) => d ? 'bg-indigo-500/10'  : 'bg-indigo-50',  title: 'Instant Setup',          desc: 'Go live in minutes — no technical expertise required.' },
+];
+
+function LeftContent() {
+  const { dark } = useTheme();
+  return (
+    <div className="space-y-7">
+      <div>
+        <h2 className={`text-[2.4rem] font-bold leading-[1.15] mb-4 ${dark ? 'text-white' : 'text-slate-900'}`}>
+          Build your future with{' '}
+          <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">smarter workflows.</span>
+        </h2>
+        <p className={`text-base leading-relaxed ${dark ? 'text-slate-400' : 'text-slate-500'}`}>
+          Join thousands of teams using My Real Customer App to automate operations and scale faster.
+        </p>
+      </div>
+      <div className="space-y-3">
+        {FEATURES.map(({ icon: Icon, color, bg, title, desc }) => (
+          <div key={title} className={`flex items-start gap-4 p-4 rounded-2xl border ${dark ? 'bg-white/[0.03] border-white/[0.08]' : 'bg-white/80 border-slate-100 shadow-sm'}`}>
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${bg(dark)}`}><Icon size={20} className={color} /></div>
+            <div>
+              <h3 className={`font-semibold text-sm ${dark ? 'text-white' : 'text-slate-800'}`}>{title}</h3>
+              <p className={`text-xs mt-0.5 leading-relaxed ${dark ? 'text-slate-400' : 'text-slate-500'}`}>{desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Register() {
+  const { dark } = useTheme();
+  const navigate = useNavigate();
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' });
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password !== form.confirm) {
-      return toast.error('Passwords do not match');
-    }
+    if (form.password !== form.confirm) return toast.error('Passwords do not match');
     setLoading(true);
     try {
       await authAPI.register({ name: form.name, email: form.email, password: form.password });
-      toast.success('Account created successfully! Please sign in.');
+      toast.success('Account created! Please sign in.');
       navigate('/login');
     } catch (err) {
-      const message = err?.response?.data?.message || 'Registration failed. Please try again.';
-      toast.error(message);
+      toast.error(err?.response?.data?.message || 'Registration failed');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#050816] text-white flex items-center justify-center overflow-hidden relative px-6 py-10">
-      {/* Background Glow */}
-      <div className="absolute top-[-120px] left-[-120px] w-[350px] h-[350px] bg-cyan-500/20 blur-3xl rounded-full" />
-      <div className="absolute bottom-[-140px] right-[-120px] w-[400px] h-[400px] bg-violet-500/20 blur-3xl rounded-full" />
-      <div className="absolute top-[40%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-fuchsia-500/10 blur-3xl rounded-full" />
-
-      <div className="w-full max-w-6xl grid lg:grid-cols-2 overflow-hidden rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-2xl shadow-2xl relative z-10">
-
-        {/* Left Side */}
-        <div className="hidden lg:flex flex-col justify-between p-12 border-r border-white/10 bg-gradient-to-br from-cyan-500/10 via-transparent to-violet-500/10">
-          <div>
-            <div className="flex items-center gap-4 mb-10">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-[10px] bg-gradient-to-br from-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                <Zap size={18} className="text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold tracking-wide">MessagePro</h1>
-                <p className="text-sm text-gray-400">Next Generation Workspace</p>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              <h2 className="text-5xl font-bold leading-tight max-w-xl">
-                Build your future with smarter workflows.
-              </h2>
-              <p className="text-lg text-gray-300 leading-relaxed max-w-lg">
-                Join thousands of creators, startups, and teams using MessagePro to
-                automate operations, manage growth, and scale faster.
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-5 mt-12">
-            <div className="flex items-start gap-4 p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
-              <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400">
-                <ShieldCheck size={24} />
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg">Enterprise Security</h3>
-                <p className="text-gray-400 text-sm mt-1">
-                  End-to-end encrypted infrastructure with advanced protection.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
-              <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-400">
-                <Sparkles size={24} />
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg">AI-Powered Experience</h3>
-                <p className="text-gray-400 text-sm mt-1">
-                  Unlock powerful automation tools built for modern teams.
-                </p>
-              </div>
-            </div>
-          </div>
+    <AuthLayout leftContent={<LeftContent />}>
+      <div>
+        <div className="mb-7">
+          <h2 className={`text-3xl font-bold mb-2 ${dark ? 'text-white' : 'text-slate-900'}`}>Create Account</h2>
+          <p className={`text-sm ${dark ? 'text-slate-400' : 'text-slate-500'}`}>Join thousands of teams scaling with us.</p>
         </div>
-
-        {/* Right Side */}
-        <div className="flex items-center justify-center p-8 sm:p-12">
-          <div className="w-full max-w-md">
-            <div className="mb-8 text-center lg:text-left">
-              <h2 className="text-4xl font-bold mb-3">Create Account</h2>
-              <p className="text-gray-400 text-base">Start your premium experience today.</p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="block text-sm text-gray-300 mb-2">Full Name</label>
-                <input
-                  type="text"
-                  value={form.name}
-                  onChange={set('name')}
-                  placeholder="John Doe"
-                  required
-                  className="w-full px-5 py-4 rounded-2xl bg-white/5 border border-white/10 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 outline-none transition-all duration-300 placeholder:text-gray-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-gray-300 mb-2">Email Address</label>
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={set('email')}
-                  placeholder="you@example.com"
-                  required
-                  className="w-full px-5 py-4 rounded-2xl bg-white/5 border border-white/10 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 outline-none transition-all duration-300 placeholder:text-gray-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-gray-300 mb-2">Password</label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    value={form.password}
-                    onChange={set('password')}
-                    placeholder="Create password"
-                    required
-                    className="w-full px-5 py-4 pr-14 rounded-2xl bg-white/5 border border-white/10 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/30 outline-none transition-all duration-300 placeholder:text-gray-500"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm text-gray-300 mb-2">Confirm Password</label>
-                <div className="relative">
-                  <input
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    value={form.confirm}
-                    onChange={set('confirm')}
-                    placeholder="Confirm password"
-                    required
-                    className="w-full px-5 py-4 pr-14 rounded-2xl bg-white/5 border border-white/10 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 outline-none transition-all duration-300 placeholder:text-gray-500"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition"
-                  >
-                    {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-4 rounded-2xl bg-gradient-to-r from-cyan-400 to-violet-500 text-black font-semibold flex items-center justify-center gap-2 hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-cyan-500/20 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
-              >
-                {loading ? 'Creating Account...' : 'Create Account'}
-                {!loading && <ArrowRight size={20} />}
-              </button>
-            </form>
-
-            <p className="text-center text-gray-400 text-sm mt-8">
-              Already have an account?{' '}
-              <Link to="/login" className="text-cyan-400 hover:text-cyan-300 transition">
-                Sign In
-              </Link>
-            </p>
-          </div>
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <AuthInput label="Full Name" type="text" placeholder="John Doe" icon={User} value={form.name} onChange={set('name')} required />
+          <AuthInput label="Email Address" type="email" placeholder="you@example.com" icon={Mail} value={form.email} onChange={set('email')} required />
+          <AuthInput
+            label="Password" type={showPassword ? 'text' : 'password'} placeholder="Min. 8 characters" icon={Lock}
+            value={form.password} onChange={set('password')}
+            rightIcon={showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            onRightIconClick={() => setShowPassword(v => !v)} required
+          />
+          <AuthInput
+            label="Confirm Password" type={showConfirm ? 'text' : 'password'} placeholder="Re-enter password" icon={Lock}
+            value={form.confirm} onChange={set('confirm')}
+            rightIcon={showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+            onRightIconClick={() => setShowConfirm(v => !v)} required
+          />
+          <label className={`flex items-start gap-2.5 text-sm cursor-pointer select-none ${dark ? 'text-slate-400' : 'text-slate-500'}`}>
+            <input type="checkbox" className="w-4 h-4 rounded mt-0.5 accent-indigo-500" required />
+            <span>I agree to the <span className={dark ? 'text-indigo-400' : 'text-indigo-600'}>Terms of Service</span> and <span className={dark ? 'text-indigo-400' : 'text-indigo-600'}>Privacy Policy</span></span>
+          </label>
+          <AuthButton loading={loading} type="submit">
+            <span className="flex items-center justify-center gap-2">Create Account <ArrowRight size={16} /></span>
+          </AuthButton>
+        </form>
+        <p className={`text-center text-sm mt-6 ${dark ? 'text-slate-500' : 'text-slate-400'}`}>
+          Already have an account?{' '}
+          <Link to="/login" className={`font-semibold ${dark ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-700'}`}>Sign in</Link>
+        </p>
       </div>
-    </div>
+    </AuthLayout>
   );
 }

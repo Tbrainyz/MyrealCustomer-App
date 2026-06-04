@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 import {
   AreaChart,
   Area,
@@ -16,11 +17,7 @@ import {
 import Header from '../components/layout/Header';
 import { dashboardAPI, expensesAPI } from '../api';
 
-import {
-  jsx as _jsx,
-  jsxs as _jsxs,
-  Fragment as _Fragment
-} from "react/jsx-runtime";
+
 
 const COLORS = [
   '#6272f1',
@@ -32,6 +29,7 @@ const COLORS = [
 ];
 
 export default function CashFlow() {
+  const { dark } = useTheme();
   const [monthly, setMonthly] = useState([]);
   const [expenseBreakdown, setExpenseBreakdown] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -114,7 +112,7 @@ export default function CashFlow() {
               <TrendingUp size={18} />
               <span className="text-xs text-brand-muted">Total Income</span>
             </div>
-            <p className="text-2xl font-bold text-white mt-2">
+            <p className="text-2xl font-bold text-slate-900 dark:text-white mt-2">
               ₦{totalIncome.toLocaleString()}
             </p>
           </div>
@@ -124,7 +122,7 @@ export default function CashFlow() {
               <TrendingDown size={18} />
               <span className="text-xs text-brand-muted">Total Expenses</span>
             </div>
-            <p className="text-2xl font-bold text-white mt-2">
+            <p className="text-2xl font-bold text-slate-900 dark:text-white mt-2">
               ₦{totalExpenses.toLocaleString()}
             </p>
           </div>
@@ -149,7 +147,7 @@ export default function CashFlow() {
 
           {/* MAIN TREND */}
           <div className="card p-6 lg:col-span-2">
-            <h3 className="text-sm text-brand-muted mb-4">
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">
               Monthly Cash Flow Trend
             </h3>
 
@@ -169,10 +167,10 @@ export default function CashFlow() {
                     </linearGradient>
                   </defs>
 
-                  <CartesianGrid stroke="#2a2a4a" strokeDasharray="3 3" />
+                  <CartesianGrid stroke={dark ? "#2a2a4a" : "#e8e8f4"} strokeDasharray="3 3" />
 
-                  <XAxis dataKey="month" tick={{ fill: '#6b6b8a' }} />
-                  <YAxis tick={{ fill: '#6b6b8a' }} />
+                  <XAxis dataKey="month" tick={{ fill: dark ? '#6b6b8a' : '#9898b8', fontSize: 12 }} />
+                  <YAxis tick={{ fill: dark ? '#6b6b8a' : '#9898b8', fontSize: 12 }} />
 
                   <Tooltip
                     contentStyle={{
@@ -205,7 +203,7 @@ export default function CashFlow() {
 
           {/* PIE ANALYTICS */}
           <div className="card p-6">
-            <h3 className="text-sm text-brand-muted mb-4">
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">
               Expense Distribution
             </h3>
 
@@ -246,7 +244,7 @@ export default function CashFlow() {
                         />
                         <span className="text-brand-muted">{e.name}</span>
                       </div>
-                      <span className="text-white">
+                      <span className="text-slate-900 dark:text-white">
                         ₦{e.value.toLocaleString()}
                       </span>
                     </div>

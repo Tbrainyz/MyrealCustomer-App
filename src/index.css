@@ -306,3 +306,79 @@
   border-radius: 10px !important;
   font-size: 13px !important;
 }
+
+/* ==========================================
+   LIGHT MODE OVERRIDES
+========================================== */
+.light body,
+:root:not(.dark) body {
+  background-color: #f4f5f9;
+  color: #1a1a2e;
+}
+
+/* cards */
+.light .card,
+:root:not(.dark) .card {
+  background-color: #ffffff;
+  border-color: #e4e4f0;
+}
+
+/* stat cards */
+.light .stat-card,
+:root:not(.dark) .stat-card {
+  background-color: #ffffff;
+  border-color: #e4e4f0;
+}
+.light .stat-card:hover,
+:root:not(.dark) .stat-card:hover {
+  border-color: rgba(98,114,241,0.35);
+}
+
+/* inputs */
+.light .input,
+:root:not(.dark) .input {
+  background-color: #f2f2f8;
+  border-color: #d8d8ee;
+  color: #1a1a2e;
+}
+.light .input::placeholder,
+:root:not(.dark) .input::placeholder { color: #9898b8; }
+.light .input:focus,
+:root:not(.dark) .input:focus { border-color: #6272f1; }
+
+/* badges */
+.light .badge-green  { background: rgba(16,185,129,.12); color: #059669; }
+.light .badge-yellow { background: rgba(245,158,11,.12);  color: #b45309; }
+.light .badge-red    { background: rgba(239,68,68,.12);   color: #dc2626; }
+.light .badge-blue   { background: rgba(59,130,246,.12);  color: #2563eb; }
+.light .badge-purple { background: rgba(139,92,246,.12);  color: #7c3aed; }
+
+/* label */
+.light .label,
+:root:not(.dark) .label { color: #8888aa; }
+
+/* page-title / section-title */
+.light .page-title,
+:root:not(.dark) .page-title { color: #1a1a2e; }
+.light .section-title,
+:root:not(.dark) .section-title { color: #1a1a2e; }
+
+/* btn-ghost */
+.light .btn-ghost,
+:root:not(.dark) .btn-ghost { color: #6666aa; }
+.light .btn-ghost:hover,
+:root:not(.dark) .btn-ghost:hover { background-color: #eeeef8; color: #1a1a2e; }
+
+/* btn-secondary */
+.light .btn-secondary,
+:root:not(.dark) .btn-secondary { background-color: #ebebf8; color: #1a1a2e; }
+.light .btn-secondary:hover,
+:root:not(.dark) .btn-secondary:hover { background-color: #ddddf0; }
+
+/* text utilities referenced in pages */
+.light .text-brand-muted,
+:root:not(.dark) .text-brand-muted { color: #7878a0; }
+
+/* scrollbar light */
+.light ::-webkit-scrollbar-thumb,
+:root:not(.dark) ::-webkit-scrollbar-thumb { background: rgba(79,70,229,0.2); }

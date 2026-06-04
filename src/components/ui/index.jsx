@@ -1,236 +1,179 @@
-import { Loader2 } from 'lucide-react';
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-export function Spinner({
-  size = 20
-}) {
-  return /*#__PURE__*/_jsx(Loader2, {
-    size: size,
-    className: "animate-spin text-primary-400"
-  });
+import { Loader2, X } from 'lucide-react';
+
+export function Spinner({ size = 20 }) {
+  return <Loader2 size={size} className="animate-spin text-primary-400" />;
 }
+
 export function LoadingScreen() {
-  return /*#__PURE__*/_jsx("div", {
-    className: "flex items-center justify-center h-64",
-    children: /*#__PURE__*/_jsxs("div", {
-      className: "flex flex-col items-center gap-3",
-      children: [/*#__PURE__*/_jsx(Spinner, {
-        size: 32
-      }), /*#__PURE__*/_jsx("p", {
-        className: "text-sm text-brand-muted",
-        children: "Loading..."
-      })]
-    })
-  });
+  return (
+    <div className="flex items-center justify-center h-64">
+      <div className="flex flex-col items-center gap-3">
+        <Spinner size={32} />
+        <p className="text-sm text-slate-500 dark:text-brand-muted">Loading...</p>
+      </div>
+    </div>
+  );
 }
-export function EmptyState({
-  icon: Icon,
-  title,
-  description,
-  action
-}) {
-  return /*#__PURE__*/_jsxs("div", {
-    className: "flex flex-col items-center justify-center py-16 text-center",
-    children: [/*#__PURE__*/_jsx("div", {
-      className: "w-14 h-14 rounded-full bg-brand-border flex items-center justify-center mb-4",
-      children: /*#__PURE__*/_jsx(Icon, {
-        size: 24,
-        className: "text-brand-muted"
-      })
-    }), /*#__PURE__*/_jsx("h3", {
-      className: "text-white font-medium mb-1",
-      children: title
-    }), /*#__PURE__*/_jsx("p", {
-      className: "text-sm text-brand-muted max-w-sm",
-      children: description
-    }), action && /*#__PURE__*/_jsx("div", {
-      className: "mt-4",
-      children: action
-    })]
-  });
+
+export function EmptyState({ icon: Icon, title, description, action }) {
+  return (
+    <div className="flex flex-col items-center justify-center py-16 text-center">
+      <div className="w-14 h-14 rounded-full bg-slate-100 dark:bg-brand-border/50 flex items-center justify-center mb-4">
+        <Icon size={24} className="text-slate-400 dark:text-brand-muted" />
+      </div>
+      <h3 className="text-sm font-semibold text-slate-800 dark:text-white mb-1">{title}</h3>
+      <p className="text-sm text-slate-500 dark:text-brand-muted max-w-sm">{description}</p>
+      {action && <div className="mt-4">{action}</div>}
+    </div>
+  );
 }
-export function Modal({
-  isOpen,
-  onClose,
-  title,
-  children,
-  size = 'md'
-}) {
+
+export function Modal({ isOpen, onClose, title, children, size = 'md' }) {
   if (!isOpen) return null;
-  const w = {
-    sm: 'max-w-sm',
-    md: 'max-w-md',
-    lg: 'max-w-lg',
-    xl: 'max-w-2xl'
-  }[size];
-  return /*#__PURE__*/_jsxs("div", {
-    className: "fixed inset-0 z-50 flex items-center justify-center p-4",
-    children: [/*#__PURE__*/_jsx("div", {
-      className: "absolute inset-0 bg-black/60 backdrop-blur-sm",
-      onClick: onClose
-    }), /*#__PURE__*/_jsxs("div", {
-      className: `relative w-full ${w} card p-6 animate-slide-up max-h-[90vh] overflow-y-auto`,
-      children: [/*#__PURE__*/_jsx("h2", {
-        className: "section-title mb-4",
-        children: title
-      }), children]
-    })]
-  });
+  const w = { sm: 'max-w-sm', md: 'max-w-md', lg: 'max-w-lg', xl: 'max-w-2xl' }[size];
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className={`relative w-full ${w} animate-slide-up max-h-[90vh] overflow-y-auto rounded-3xl border p-6
+        bg-white dark:bg-[#161628] border-slate-200 dark:border-white/10 shadow-2xl`}>
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">{title}</h2>
+          <button onClick={onClose} className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-all">
+            <X size={16} />
+          </button>
+        </div>
+        {children}
+      </div>
+    </div>
+  );
 }
-export function ConfirmDialog({
-  isOpen,
-  onClose,
-  onConfirm,
-  title,
-  message,
-  confirmText = 'Delete'
-}) {
-  return /*#__PURE__*/_jsxs(Modal, {
-    isOpen: isOpen,
-    onClose: onClose,
-    title: title,
-    size: "sm",
-    children: [/*#__PURE__*/_jsx("p", {
-      className: "text-sm text-brand-muted mb-6",
-      children: message
-    }), /*#__PURE__*/_jsxs("div", {
-      className: "flex gap-3 justify-end",
-      children: [/*#__PURE__*/_jsx("button", {
-        onClick: onClose,
-        className: "btn-secondary",
-        children: "Cancel"
-      }), /*#__PURE__*/_jsx("button", {
-        onClick: () => {
-          onConfirm();
-          onClose();
-        },
-        className: "btn-primary bg-red-600 hover:bg-red-700",
-        children: confirmText
-      })]
-    })]
-  });
+
+export function ConfirmDialog({ isOpen, onClose, onConfirm, title, message, confirmText = 'Delete' }) {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm">
+      <p className="text-sm text-slate-500 dark:text-brand-muted mb-6">{message}</p>
+      <div className="flex gap-3 justify-end">
+        <button onClick={onClose} className="btn-secondary">Cancel</button>
+        <button onClick={() => { onConfirm(); onClose(); }} className="btn-primary !bg-red-600 hover:!bg-red-700">
+          {confirmText}
+        </button>
+      </div>
+    </Modal>
+  );
 }
-export function StatCard({
-  label,
-  value,
-  icon: Icon,
-  trend,
-  color = 'purple'
-}) {
-  const clr = {
-    purple: 'bg-primary-500/10 text-primary-400',
-    green: 'bg-emerald-500/10 text-emerald-400',
-    red: 'bg-red-500/10 text-red-400',
-    blue: 'bg-blue-500/10 text-blue-400',
-    yellow: 'bg-yellow-500/10 text-yellow-400'
-  }[color];
-  return /*#__PURE__*/_jsxs("div", {
-    className: "stat-card",
-    children: [/*#__PURE__*/_jsxs("div", {
-      className: "flex items-start justify-between mb-3",
-      children: [/*#__PURE__*/_jsx("div", {
-        className: `w-9 h-9 rounded-lg flex items-center justify-center ${clr}`,
-        children: /*#__PURE__*/_jsx(Icon, {
-          size: 18
-        })
-      }), trend && /*#__PURE__*/_jsxs("span", {
-        className: `text-xs font-medium ${trend.value >= 0 ? 'text-emerald-400' : 'text-red-400'}`,
-        children: [trend.value >= 0 ? '+' : '', trend.value, "%"]
-      })]
-    }), /*#__PURE__*/_jsx("p", {
-      className: "text-2xl font-display font-bold text-white mb-0.5",
-      children: value
-    }), /*#__PURE__*/_jsx("p", {
-      className: "text-xs text-brand-muted",
-      children: label
-    })]
-  });
+
+/* ─── STAT CARD ─── */
+export function StatCard({ label, value, icon: Icon, trend, color = 'purple' }) {
+  const iconClr = {
+    purple: 'bg-primary-500/15 text-primary-500',
+    green:  'bg-emerald-500/15 text-emerald-500',
+    red:    'bg-red-500/15 text-red-500',
+    blue:   'bg-blue-500/15 text-blue-500',
+    yellow: 'bg-yellow-500/15 text-yellow-500',
+    cyan:   'bg-cyan-500/15 text-cyan-500',
+  }[color] || 'bg-primary-500/15 text-primary-500';
+
+  return (
+    <div className="
+      relative overflow-hidden rounded-3xl p-5 transition-all duration-200
+      bg-white border border-slate-200 shadow-sm
+      dark:bg-white/[0.04] dark:border-white/[0.08] dark:shadow-none
+      hover:-translate-y-1 hover:border-primary-500/30 hover:shadow-lg
+    ">
+      <div className="flex items-start justify-between mb-4">
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${iconClr}`}>
+          <Icon size={18} />
+        </div>
+        {trend && (
+          <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
+            trend.value >= 0 ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400' : 'bg-red-500/15 text-red-600 dark:text-red-400'
+          }`}>
+            {trend.value >= 0 ? '+' : ''}{trend.value}%
+          </span>
+        )}
+      </div>
+      {/* value — explicit colours, no dark: prefix ambiguity */}
+      <p className="text-2xl font-bold mb-0.5 text-slate-900 dark:text-white">{value}</p>
+      <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
+    </div>
+  );
 }
-export function Table({
-  headers,
-  rows,
-  loading
-}) {
-  return /*#__PURE__*/_jsx("div", {
-    className: "overflow-x-auto",
-    children: /*#__PURE__*/_jsxs("table", {
-      className: "w-full text-sm",
-      children: [/*#__PURE__*/_jsx("thead", {
-        children: /*#__PURE__*/_jsx("tr", {
-          className: "border-b border-brand-border",
-          children: headers.map(h => /*#__PURE__*/_jsx("th", {
-            className: "text-left py-3 px-4 text-xs font-semibold text-brand-muted uppercase tracking-wider whitespace-nowrap",
-            children: h
-          }, h))
-        })
-      }), /*#__PURE__*/_jsx("tbody", {
-        children: loading ? /*#__PURE__*/_jsx("tr", {
-          children: /*#__PURE__*/_jsx("td", {
-            colSpan: headers.length,
-            className: "text-center py-12",
-            children: /*#__PURE__*/_jsx(Spinner, {})
-          })
-        }) : rows.map((row, i) => /*#__PURE__*/_jsx("tr", {
-          className: "border-b border-brand-border/50 hover:bg-brand-border/30 transition-colors",
-          children: row.map((cell, j) => /*#__PURE__*/_jsx("td", {
-            className: "py-3 px-4 text-white/80",
-            children: cell
-          }, j))
-        }, i))
-      })]
-    })
-  });
+
+/* ─── TABLE ─── */
+export function Table({ headers, rows, loading }) {
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-slate-200 dark:border-white/[0.10]">
+            {headers.map(h => (
+              <th key={h} className="
+                text-left py-3 px-4 text-xs font-semibold uppercase tracking-wider whitespace-nowrap
+                text-slate-500 dark:text-slate-400
+              ">
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {loading ? (
+            <tr>
+              <td colSpan={headers.length} className="text-center py-12">
+                <Spinner />
+              </td>
+            </tr>
+          ) : rows.map((row, i) => (
+            <tr key={i} className="
+              border-b border-slate-100 dark:border-white/[0.06]
+              hover:bg-slate-50 dark:hover:bg-white/[0.06]
+              transition-colors
+            ">
+              {row.map((cell, j) => (
+                <td key={j} className="py-3.5 px-4 text-slate-700 dark:text-slate-200">{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
-export function Pagination({
-  page,
-  pages,
-  onPageChange
-}) {
+
+export function Pagination({ page, pages, onPageChange }) {
   if (pages <= 1) return null;
-  return /*#__PURE__*/_jsxs("div", {
-    className: "flex items-center justify-between pt-4",
-    children: [/*#__PURE__*/_jsxs("p", {
-      className: "text-xs text-brand-muted",
-      children: ["Page ", page, " of ", pages]
-    }), /*#__PURE__*/_jsxs("div", {
-      className: "flex gap-1",
-      children: [/*#__PURE__*/_jsx("button", {
-        onClick: () => onPageChange(page - 1),
-        disabled: page === 1,
-        className: "btn-ghost px-3 disabled:opacity-40",
-        children: "\u2190"
-      }), Array.from({
-        length: Math.min(pages, 5)
-      }, (_, i) => i + 1).map(p => /*#__PURE__*/_jsx("button", {
-        onClick: () => onPageChange(p),
-        className: `px-3 py-1.5 rounded-lg text-sm transition-colors ${p === page ? 'bg-primary-600 text-white' : 'btn-ghost'}`,
-        children: p
-      }, p)), /*#__PURE__*/_jsx("button", {
-        onClick: () => onPageChange(page + 1),
-        disabled: page === pages,
-        className: "btn-ghost px-3 disabled:opacity-40",
-        children: "\u2192"
-      })]
-    })]
-  });
+  return (
+    <div className="flex items-center justify-between pt-4">
+      <p className="text-xs text-slate-400 dark:text-brand-muted">Page {page} of {pages}</p>
+      <div className="flex gap-1">
+        <button onClick={() => onPageChange(page - 1)} disabled={page === 1} className="btn-ghost px-3 disabled:opacity-40">←</button>
+        {Array.from({ length: Math.min(pages, 5) }, (_, i) => i + 1).map(p => (
+          <button key={p} onClick={() => onPageChange(p)}
+            className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${p === page ? 'bg-primary-600 text-white' : 'btn-ghost'}`}>
+            {p}
+          </button>
+        ))}
+        <button onClick={() => onPageChange(page + 1)} disabled={page === pages} className="btn-ghost px-3 disabled:opacity-40">→</button>
+      </div>
+    </div>
+  );
 }
-export function StatusBadge({
-  status
-}) {
+
+export function StatusBadge({ status }) {
   const map = {
-    sent: 'badge-green',
-    paid: 'badge-green',
-    success: 'badge-green',
-    active: 'badge-green',
-    incoming: 'badge-green',
-    pending: 'badge-yellow',
-    draft: 'badge-yellow',
-    failed: 'badge-red',
-    overdue: 'badge-red',
-    cancelled: 'badge-red',
-    outgoing: 'badge-purple'
+    sent:      'badge badge-green',
+    paid:      'badge badge-green',
+    success:   'badge badge-green',
+    active:    'badge badge-green',
+    incoming:  'badge badge-green',
+    pending:   'badge badge-yellow',
+    draft:     'badge badge-yellow',
+    scheduled: 'badge badge-blue',
+    failed:    'badge badge-red',
+    overdue:   'badge badge-red',
+    cancelled: 'badge badge-red',
+    outgoing:  'badge badge-purple',
   };
-  return /*#__PURE__*/_jsx("span", {
-    className: map[status] || 'badge badge-blue',
-    children: status
-  });
+  const cls = map[status?.toLowerCase()] || 'badge badge-blue';
+  return <span className={cls}>{status}</span>;
 }
