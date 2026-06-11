@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Plus, Edit2, Trash2, CheckCircle, Receipt, Clock, DollarSign } from 'lucide-react';
 import Header from '../components/layout/Header';
 import { Table, StatusBadge, Modal, ConfirmDialog, Pagination, EmptyState, Spinner } from '../components/ui';
@@ -178,6 +179,16 @@ function InvoiceModal({ invoice, onClose, onSave }) {
 
 /* ---------- MAIN PAGE ---------- */
 export default function Invoices() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Handle Paystack redirect callback (?payment=success)
+  useEffect(() => {
+    if (searchParams.get('payment') === 'success') {
+      toast.success('Payment received! Refreshing invoices...');
+      setSearchParams({});  // clean the URL
+    }
+  }, []);
+
   const [invoices, setInvoices]     = useState([]);
   const [loading, setLoading]       = useState(true);
   const [page, setPage]             = useState(1);
@@ -245,11 +256,11 @@ export default function Invoices() {
           {inv.dueDate ? format(new Date(inv.dueDate), 'MMM d, yyyy') : '—'}
         </span>,
 
-        <div className="flex gap-1.5 items-center">
+        <div className="flex gap-1.5 items-center flex-wrap">
           {inv.status !== 'paid' && (
             <button onClick={() => markPaid(inv._id)}
               className="p-1.5 rounded-lg text-emerald-500 hover:bg-emerald-500/10 transition-all"
-              title="Mark as Paid">
+              title="Mark as manually paid">
               <CheckCircle size={14} />
             </button>
           )}

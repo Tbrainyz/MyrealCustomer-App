@@ -112,7 +112,15 @@ export const inventoryAPI = {
 };
 
 export const paymentsAPI = {
-  initializePaystack: data => api.post('/payments/paystack/initialize', data),
+  initialize: data       => api.post('/payments/paystack/initialize', data),
+  verify:     data       => api.post('/payments/paystack/verify', data),
+  status:     reference  => api.get(`/payments/paystack/status/${encodeURIComponent(reference)}`),
 };
 
 export default api;
+
+export const subscriptionAPI = {
+  getStatus:   ()     => api.get('/subscription/status'),
+  activate:    data   => api.post('/subscription/activate', data),
+  devBypass:   secret => api.post('/subscription/dev-bypass', { secret }),
+};

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { SubscriptionProvider } from './context/SubscriptionContext';
 import Layout from './components/layout/Layout';
 import MainLayout from './layouts/MainLayout';
 
@@ -26,13 +27,12 @@ import Inventory     from './pages/Inventory';
 import StockMovements from './pages/StockMovements';
 import Settings      from './pages/Settings';
 import Team          from './pages/Team';
-
 import AccessDenied  from './components/AccessDenied';
 
 // ─── Loading spinner ──────────────────────────────────────────────────────────
 function AppLoading() {
   return (
-    <div className="flex items-center justify-center h-screen bg-[#0f0f1a] dark:bg-[#0f0f1a]">
+    <div className="flex items-center justify-center h-screen bg-[#0f0f1a]">
       <div className="flex flex-col items-center gap-3">
         <div className="w-8 h-8 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin" />
         <p className="text-sm text-brand-muted">Loading…</p>
@@ -41,29 +41,24 @@ function AppLoading() {
   );
 }
 
-// ─── Private route — must be logged in ───────────────────────────────────────
+// ─── Private route ────────────────────────────────────────────────────────────
 function PrivateRoute({ children, roles }) {
-  const { isAuthenticated, loading, user, canAccess } = useAuth();
+  const { isAuthenticated, loading, user } = useAuth();
 
   if (loading) return <AppLoading />;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
-  // Role guard — if roles specified, check against user's role
   if (roles) {
     const allowed = Array.isArray(roles) ? roles : [roles];
     if (!allowed.includes(user?.role) && user?.role !== 'admin') {
-      return (
-        <Layout>
-          <AccessDenied requiredRole={allowed} />
-        </Layout>
-      );
+      return <Layout><AccessDenied requiredRole={allowed} /></Layout>;
     }
   }
 
   return <Layout>{children}</Layout>;
 }
 
-// ─── Public route — redirect to dashboard if already logged in ───────────────
+// ─── Public route ─────────────────────────────────────────────────────────────
 function PublicRoute({ children, allowIfLoggedIn = false }) {
   const { isAuthenticated, loading } = useAuth();
   if (loading) return <AppLoading />;
@@ -71,7 +66,7 @@ function PublicRoute({ children, allowIfLoggedIn = false }) {
   return children;
 }
 
-// ─── All routes ───────────────────────────────────────────────────────────────
+// ─── Routes ───────────────────────────────────────────────────────────────────
 function AppRoutes() {
   return (
     <Routes>
@@ -87,26 +82,26 @@ function AppRoutes() {
       <Route path="/reset-password"  element={<PublicRoute allowIfLoggedIn><ResetPassword /></PublicRoute>} />
 
       {/* Dashboard — all authenticated users */}
-      <Route path="/dashboard"      element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-      <Route path="/settings"       element={<PrivateRoute><Settings /></PrivateRoute>} />
+      <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+      <Route path="/settings"  element={<PrivateRoute><Settings /></PrivateRoute>} />
 
-      {/* Inventory — inventory_manager + admin */}
-      <Route path="/inventory"      element={<PrivateRoute roles={['inventory_manager']}><Inventory /></PrivateRoute>} />
+      {/* Inventory */}
+      <Route path="/inventory"       element={<PrivateRoute roles={['inventory_manager']}><Inventory /></PrivateRoute>} />
       <Route path="/stock-movements" element={<PrivateRoute roles={['inventory_manager']}><StockMovements /></PrivateRoute>} />
 
-      {/* Finance — finance_manager + admin */}
-      <Route path="/invoices"  element={<PrivateRoute roles={['finance_manager']}><Invoices /></PrivateRoute>} />
-      <Route path="/expenses"  element={<PrivateRoute roles={['finance_manager']}><Expenses /></PrivateRoute>} />
-      <Route path="/cashflow"  element={<PrivateRoute roles={['finance_manager']}><CashFlow /></PrivateRoute>} />
+      {/* Finance */}
+      <Route path="/invoices" element={<PrivateRoute roles={['finance_manager']}><Invoices /></PrivateRoute>} />
+      <Route path="/expenses" element={<PrivateRoute roles={['finance_manager']}><Expenses /></PrivateRoute>} />
+      <Route path="/cashflow" element={<PrivateRoute roles={['finance_manager']}><CashFlow /></PrivateRoute>} />
 
-      {/* Messaging — messaging_manager + admin */}
+      {/* Messaging */}
       <Route path="/contacts"  element={<PrivateRoute roles={['messaging_manager']}><Contacts /></PrivateRoute>} />
       <Route path="/compose"   element={<PrivateRoute roles={['messaging_manager']}><Compose /></PrivateRoute>} />
       <Route path="/scheduled" element={<PrivateRoute roles={['messaging_manager']}><Scheduled /></PrivateRoute>} />
       <Route path="/templates" element={<PrivateRoute roles={['messaging_manager']}><Templates /></PrivateRoute>} />
       <Route path="/logs"      element={<PrivateRoute roles={['messaging_manager']}><MessageLogs /></PrivateRoute>} />
 
-      {/* Team management — admin only */}
+      {/* Team — admin only */}
       <Route path="/team" element={<PrivateRoute roles={['admin']}><Team /></PrivateRoute>} />
 
       {/* 404 */}
@@ -115,13 +110,25 @@ function AppRoutes() {
   );
 }
 
+// ─── App root ─────────────────────────────────────────────────────────────────
 export default function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
         <AuthProvider>
-          <AppRoutes />
-          <Toaster position="top-right" toastOptions={{ style: { background: '#1a1a2e', color: '#fff', border: '1px solid #2a2a4a' } }} />
+          <SubscriptionProvider>
+            <AppRoutes />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                style: {
+                  background: '#1a1a2e',
+                  color:      '#fff',
+                  border:     '1px solid #2a2a4a',
+                },
+              }}
+            />
+          </SubscriptionProvider>
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>

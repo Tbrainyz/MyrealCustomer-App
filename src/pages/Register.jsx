@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { authAPI } from '../api';
 import { useTheme } from '../context/ThemeContext';
 import { Eye, EyeOff, ArrowRight, ShieldCheck, Sparkles, Zap, Mail, Lock, User } from 'lucide-react';
@@ -43,8 +43,21 @@ function LeftContent() {
 
 export default function Register() {
   const { dark } = useTheme();
-  const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' });
+  const navigate  = useNavigate();
+  const location  = useLocation();
+  const prefilledState = location.state || {};
+
+  const [form, setForm] = useState({
+    name:    prefilledState.name    || '',
+    email:   prefilledState.email   || '',
+    password: '',
+    confirm:  '',
+  });
+
+  // Show paid banner if coming from pricing
+  const paidPlan     = prefilledState.plan;
+  const paidBilling  = prefilledState.billing;
+  const paidRef      = prefilledState.reference;
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
