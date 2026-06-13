@@ -8,15 +8,15 @@ import { subscriptionAPI } from '../api';
 import { useSubscription } from '../context/SubscriptionContext';
 import toast from 'react-hot-toast';
 
-// Load Paystack
-function loadPaystack() {
+// Wait for Paystack (loaded via index.html)
+function waitForPaystack(maxWaitMs = 5000) {
   return new Promise((resolve, reject) => {
     if (window.PaystackPop) return resolve();
-    const s = document.createElement('script');
-    s.src = 'https://js.paystack.co/v1/inline.js';
-    s.onload  = resolve;
-    s.onerror = reject;
-    document.head.appendChild(s);
+    const start = Date.now();
+    const check = setInterval(() => {
+      if (window.PaystackPop) { clearInterval(check); resolve(); }
+      else if (Date.now() - start > maxWaitMs) { clearInterval(check); reject(new Error('Paystack timeout')); }
+    }, 100);
   });
 }
 
@@ -69,7 +69,7 @@ export default function TrialExpiredWall() {
   const handleSelectPlan = async (plan) => {
     setLoading(true);
     try {
-      await loadPaystack();
+      await waitForPaystack();
     } catch {
       toast.error('Could not load payment. Check your connection.');
       setLoading(false);
