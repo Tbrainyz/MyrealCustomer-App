@@ -130,11 +130,11 @@ export default function Hero() {
                 ${dark ? "bg-white/[0.05] border-white/[0.12] text-slate-300" : "bg-white border-black/[0.1] text-slate-600 shadow-sm"}`}
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#4ade80] animate-pulse block" />
-              Welcome to MessagePro
+              Welcome to My Real Customer App
             </div>
 
             {/* Clock */}
-            <div className={`flex items-center gap-2 text-[13px] font-mono ${dark ? "text-slate-500" : "text-slate-400"}`}>
+            <div className={`flex items-center gap-2 text-[13px] font-mono ${dark ? "text-slate-400" : "text-slate-400"}`}>
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping" />
               <span>{currentTime || "Loading time..."}</span>
             </div>
