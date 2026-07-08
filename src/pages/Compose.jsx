@@ -56,6 +56,7 @@ export default function Compose() {
   const [confirm, setConfirm] = useState(false);
   const [search, setSearch] = useState('');
   const [media, setMedia] = useState([]);
+  const [subject, setSubject] = useState('');
 
   const activePlatform = PLATFORMS.find(p => p.value === platform);
   const allowMedia = activePlatform?.canMedia;
@@ -131,9 +132,14 @@ export default function Compose() {
 
     setSending(true);
     try {
+      // For email, combine subject and content as "Subject | Body"
+      const sendContent = platform === 'email' && subject.trim()
+        ? `${subject.trim()} | ${content}`
+        : content;
+
       const res = await messagesAPI.send({
         platform,
-        content,
+        content: sendContent,
         contacts: selected,
         media: media.map(m => m.file)
       });
@@ -214,6 +220,17 @@ export default function Compose() {
             {/* MESSAGE */}
             <div className="card p-5">
               <h3 className="section-title mb-3">Message</h3>
+
+              {/* Subject field for email */}
+              {platform === 'email' && (
+                <input
+                  type="text"
+                  value={subject}
+                  onChange={e => setSubject(e.target.value)}
+                  className="input mb-3"
+                  placeholder="Email subject line..."
+                />
+              )}
 
               <textarea
                 value={content}
