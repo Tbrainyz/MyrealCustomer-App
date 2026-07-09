@@ -144,16 +144,23 @@ export default function Compose() {
         media: media.map(m => m.file)
       });
 
-      toast.success(
-        `Sent: ${res.data.data.sent}, Failed: ${res.data.data.failed}`
-      );
+      const { sent, failed } = res.data.data;
+      if (sent > 0 && failed === 0) {
+        toast.success(`✅ ${sent} message${sent > 1 ? 's' : ''} sent successfully!`);
+      } else if (sent > 0 && failed > 0) {
+        toast.success(`⚠️ ${sent} sent, ${failed} failed`);
+      } else {
+        toast.error(`Failed to send to all ${failed} contacts`);
+      }
 
       setContent('');
       setSelected([]);
       setMedia([]);
       setConfirm(false);
     } catch (err) {
-      toast.error('Failed to send');
+      const msg = err?.response?.data?.message || err?.message || 'Failed to send';
+      toast.error(msg);
+      console.error('Send error:', err?.response?.data || err?.message);
     } finally {
       setSending(false);
     }
@@ -304,6 +311,27 @@ export default function Compose() {
               className="input mb-3"
               placeholder="Search contacts..."
             />
+
+            {/* Select All / Deselect All */}
+            {filtered.length > 0 && (
+              <div className="flex items-center justify-between mt-2">
+                <span className="text-xs text-brand-muted">
+                  {selected.length} of {filtered.length} selected
+                </span>
+                <button
+                  onClick={() => {
+                    if (selected.length === filtered.length) {
+                      setSelected([]);
+                    } else {
+                      setSelected(filtered.map(c => c._id));
+                    }
+                  }}
+                  className="text-xs text-primary-400 hover:text-primary-300 font-medium"
+                >
+                  {selected.length === filtered.length ? 'Deselect All' : 'Select All'}
+                </button>
+              </div>
+            )}
 
             <div className="max-h-72 overflow-y-auto space-y-1">
               {loading ? (
