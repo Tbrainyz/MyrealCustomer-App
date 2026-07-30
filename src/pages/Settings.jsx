@@ -270,6 +270,7 @@ function ApiKeysTab() {
     whatsappToken: '', whatsappPhoneId: user?.apiKeys?.whatsappPhoneId || '',
     facebookToken: '', facebookPageId: user?.apiKeys?.facebookPageId || '',
     instagramToken: '',
+    smartsmsToken: '', smartsmsSenderId: user?.apiKeys?.smartsmsSenderId || '',
   });
   const [loading, setLoading] = useState(false);
   const set = k => e => setKeys(x => ({ ...x, [k]: e.target.value }));
@@ -282,10 +283,12 @@ function ApiKeysTab() {
       if (keys.whatsappPhoneId) payload.whatsappPhoneId = keys.whatsappPhoneId;
       if (keys.facebookToken)  payload.facebookToken  = keys.facebookToken;
       if (keys.facebookPageId) payload.facebookPageId = keys.facebookPageId;
-      if (keys.instagramToken) payload.instagramToken = keys.instagramToken;
+      if (keys.instagramToken)   payload.instagramToken   = keys.instagramToken;
+      if (keys.smartsmsToken)    payload.smartsmsToken    = keys.smartsmsToken;
+      if (keys.smartsmsSenderId) payload.smartsmsSenderId = keys.smartsmsSenderId;
       await authAPI.updateApiKeys(payload);
       toast.success('API keys saved');
-      setKeys(k => ({ ...k, whatsappToken: '', facebookToken: '', instagramToken: '' }));
+      setKeys(k => ({ ...k, whatsappToken: '', facebookToken: '', instagramToken: '', smartsmsToken: '' }));
     } catch { toast.error('Failed to save API keys'); }
     finally { setLoading(false); }
   };
@@ -305,6 +308,12 @@ function ApiKeysTab() {
       <div className="border-t border-slate-200 dark:border-brand-border pt-5 space-y-3">
         <h3 className="section-title">Instagram API</h3>
         <Field label="Instagram Access Token"><input type="password" value={keys.instagramToken} onChange={set('instagramToken')} placeholder="IGQ… (leave blank to keep existing)" className="input font-mono text-sm" /></Field>
+      </div>
+      <div className="border-t border-slate-200 dark:border-brand-border pt-5 space-y-3">
+        <h3 className="section-title">SmartSMS Solutions (SMS)</h3>
+        <Field label="API Token"><input type="password" value={keys.smartsmsToken} onChange={set('smartsmsToken')} placeholder="Leave blank to keep existing" className="input font-mono text-sm" /></Field>
+        <Field label="Sender ID"><input value={keys.smartsmsSenderId} onChange={set('smartsmsSenderId')} placeholder="e.g. MYBRAND" className="input font-mono text-sm" /></Field>
+        <p className="text-xs text-brand-muted">Get your token and register a Sender ID at <a href="https://app.smartsmssolutions.com" target="_blank" rel="noopener noreferrer" className="text-primary-400 hover:underline">smartsmssolutions.com</a></p>
       </div>
       <SaveBtn loading={loading} label="Save API Keys" onClick={save} />
       <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 text-sm text-yellow-600 dark:text-yellow-400">

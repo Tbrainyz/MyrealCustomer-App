@@ -56,6 +56,9 @@ export const usersAPI = {
 
 export const messagesAPI = {
   send:            data   => api.post('/messages/send', data),
+  sendWithMedia:   formData => api.post('/messages/send', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
   schedule:        data   => api.post('/messages/schedule', data),
   getLogs:         params => api.get('/messages/logs', { params }),
   getScheduled:    params => api.get('/messages/scheduled', { params }),

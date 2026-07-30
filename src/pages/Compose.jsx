@@ -137,12 +137,22 @@ export default function Compose() {
         ? `${subject.trim()} | ${content}`
         : content;
 
-      const res = await messagesAPI.send({
-        platform,
-        content: sendContent,
-        contacts: selected,
-        media: media.map(m => m.file)
-      });
+      let res;
+      if (media.length > 0) {
+        // Use FormData for messages with attachments
+        const formData = new FormData();
+        formData.append('platform', platform);
+        formData.append('content', sendContent);
+        selected.forEach(id => formData.append('contacts[]', id));
+        media.forEach(m => formData.append('media', m.file));
+        res = await messagesAPI.sendWithMedia(formData);
+      } else {
+        res = await messagesAPI.send({
+          platform,
+          content: sendContent,
+          contacts: selected,
+        });
+      }
 
       const { sent, failed } = res.data.data;
       if (sent > 0 && failed === 0) {
@@ -150,7 +160,10 @@ export default function Compose() {
       } else if (sent > 0 && failed > 0) {
         toast.success(`⚠️ ${sent} sent, ${failed} failed`);
       } else {
-        toast.error(`Failed to send to all ${failed} contacts`);
+        // Show the actual error reason from the first failed detail
+        const firstError = res.data.details?.find(d => d.status === 'failed')?.error;
+        toast.error(firstError ? `Failed: ${firstError}` : `Failed to send to all ${failed} contacts`);
+        console.error('Send details:', res.data.details);
       }
 
       setContent('');
