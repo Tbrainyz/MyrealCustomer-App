@@ -101,7 +101,7 @@ function NavItems({ collapsed, onClose }) {
         {!collapsed && (
           <div>
             <h2 className={`font-display font-bold text-[15px] leading-tight ${dark ? 'text-white' : 'text-slate-900'}`}>
-              My Real Customer
+              My Real Customer App
             </h2>
             <p className={`text-[11px] ${dark ? 'text-slate-500' : 'text-slate-400'}`}>Business Suite</p>
           </div>
