@@ -58,6 +58,7 @@ export default function Compose() {
   const [confirm, setConfirm] = useState(false);
   const [search, setSearch] = useState('');
   const [media, setMedia] = useState([]);
+  const [subject, setSubject] = useState('');
 
   const activePlatform = PLATFORMS.find(p => p.value === platform);
   const allowMedia = activePlatform?.canMedia;
@@ -133,23 +134,48 @@ export default function Compose() {
 
     setSending(true);
     try {
-      const res = await messagesAPI.send({
-        platform,
-        content,
-        contacts: selected,
-        media: media.map(m => m.file)
-      });
+      // For email, combine subject and content as "Subject | Body"
+      const sendContent = platform === 'email' && subject.trim()
+        ? `${subject.trim()} | ${content}`
+        : content;
 
-      toast.success(
-        `Sent: ${res.data.data.sent}, Failed: ${res.data.data.failed}`
-      );
+      let res;
+      if (media.length > 0) {
+        // Use FormData for messages with attachments
+        const formData = new FormData();
+        formData.append('platform', platform);
+        formData.append('content', sendContent);
+        selected.forEach(id => formData.append('contacts[]', id));
+        media.forEach(m => formData.append('media', m.file));
+        res = await messagesAPI.sendWithMedia(formData);
+      } else {
+        res = await messagesAPI.send({
+          platform,
+          content: sendContent,
+          contacts: selected,
+        });
+      }
+
+      const { sent, failed } = res.data.data;
+      if (sent > 0 && failed === 0) {
+        toast.success(`✅ ${sent} message${sent > 1 ? 's' : ''} sent successfully!`);
+      } else if (sent > 0 && failed > 0) {
+        toast.success(`⚠️ ${sent} sent, ${failed} failed`);
+      } else {
+        // Show the actual error reason from the first failed detail
+        const firstError = res.data.details?.find(d => d.status === 'failed')?.error;
+        toast.error(firstError ? `Failed: ${firstError}` : `Failed to send to all ${failed} contacts`);
+        console.error('Send details:', res.data.details);
+      }
 
       setContent('');
       setSelected([]);
       setMedia([]);
       setConfirm(false);
     } catch (err) {
-      toast.error('Failed to send');
+      const msg = err?.response?.data?.message || err?.message || 'Failed to send';
+      toast.error(msg);
+      console.error('Send error:', err?.response?.data || err?.message);
     } finally {
       setSending(false);
     }
@@ -216,6 +242,17 @@ export default function Compose() {
             {/* MESSAGE */}
             <div className="card p-5">
               <h3 className="section-title mb-3">Message</h3>
+
+              {/* Subject field for email */}
+              {platform === 'email' && (
+                <input
+                  type="text"
+                  value={subject}
+                  onChange={e => setSubject(e.target.value)}
+                  className="input mb-3"
+                  placeholder="Email subject line..."
+                />
+              )}
 
               <textarea
                 value={content}
@@ -289,6 +326,27 @@ export default function Compose() {
               className="input mb-3"
               placeholder="Search contacts..."
             />
+
+            {/* Select All / Deselect All */}
+            {filtered.length > 0 && (
+              <div className="flex items-center justify-between mt-2">
+                <span className="text-xs text-brand-muted">
+                  {selected.length} of {filtered.length} selected
+                </span>
+                <button
+                  onClick={() => {
+                    if (selected.length === filtered.length) {
+                      setSelected([]);
+                    } else {
+                      setSelected(filtered.map(c => c._id));
+                    }
+                  }}
+                  className="text-xs text-primary-400 hover:text-primary-300 font-medium"
+                >
+                  {selected.length === filtered.length ? 'Deselect All' : 'Select All'}
+                </button>
+              </div>
+            )}
 
             <div className="max-h-72 overflow-y-auto space-y-1">
               {loading ? (
