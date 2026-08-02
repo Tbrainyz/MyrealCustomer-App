@@ -31,7 +31,13 @@ export default function Navbar({ scrolled }) {
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-[10px] bg-gradient-to-br from-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
               <Zap size={18} className="text-white" />
             </div>
+<<<<<<< HEAD
             <span className={`font-display font-bold text-xl ${dark ? "text-white" : "text-slate-900"}`}>
+=======
+            <span
+              className={`font-display font-bold text-2xl ${dark ? "text-white" : "text-slate-900"}`}
+            >
+>>>>>>> 3011e53 (some modifications)
               My Real Customer App
             </span>
           </a>

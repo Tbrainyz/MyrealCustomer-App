@@ -56,10 +56,10 @@ export default function Features() {
           <SectionBadge>Core Features</SectionBadge>
         </div>
         <SectionTitle
-          subtitle="Everything you need to run business communication, inventory, and finances — unified in one powerful AI platform."
+          subtitle="Everything You Need to Run Business Communication, Inventory, and Finances — All Unified in One Powerful Platform."
         >
-          One platform,{' '}
-          <span className="gradient-text">infinite possibilities</span>
+          One Platform,{' '}
+          <span className="gradient-text">Infinite Possibilities</span>
         </SectionTitle>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

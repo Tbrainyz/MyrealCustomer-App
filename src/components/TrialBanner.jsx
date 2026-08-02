@@ -40,7 +40,7 @@ export default function TrialBanner() {
         <Clock size={14} className={textColor} />
         <span className={`font-medium ${textColor}`}>{label}</span>
         <span className={`hidden sm:inline ${dark ? 'text-slate-400' : 'text-slate-500'}`}>
-          — Subscribe to keep full access after your trial ends.
+          — Subscribe to Keep Full Access After Your Trial Ends.
         </span>
       </div>
       <div className="flex items-center gap-2 shrink-0">

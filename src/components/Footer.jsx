@@ -60,13 +60,13 @@ export default function Footer() {
 
             <p className={`text-sm leading-relaxed mb-6 max-w-[280px]
               ${dark ? 'text-slate-500' : 'text-slate-400'}`}>
-              The AI-powered platform that unifies messaging, inventory, and financial operations for modern businesses.
+              A Platform That Unifies Messaging, Inventory, And Financial Operations For Modern Businesses.
             </p>
 
             {/* Newsletter */}
             {subscribed ? (
               <div className="flex items-center gap-2 text-sm text-emerald-400 font-semibold">
-                <span>✓</span> You're subscribed!
+                <span>✓</span> You're Subscribed!
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="flex gap-2">
@@ -121,7 +121,7 @@ export default function Footer() {
             ${dark ? 'border-white/[0.06]' : 'border-black/[0.06]'}`}
         >
           <p className={`text-xs ${dark ? 'text-slate-600' : 'text-slate-400'}`}>
-            © {new Date().getFullYear()} My Real Customer App, Inc. All rights reserved.
+            © {new Date().getFullYear()} My Real Customer App, Inc. All Rights Reserved.
           </p>
           <div className="flex items-center gap-2.5">
             {SOCIALS.map(({ Icon, label }, i) => (
