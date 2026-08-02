@@ -62,7 +62,7 @@ export default function FAQ() {
           <SectionBadge>FAQ</SectionBadge>
         </div>
         <SectionTitle
-          subtitle="Have questions? We have answers. Can't find what you're looking for? Chat with us live."
+          subtitle="Have Questions? We Have Answers. Can't Find What You're Looking For? Chat With Us Live."
         >
           Frequently asked{' '}
           <span className="gradient-text">questions</span>

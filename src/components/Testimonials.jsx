@@ -76,7 +76,7 @@ export default function Testimonials() {
         <div className="text-center">
           <SectionBadge>Testimonials</SectionBadge>
         </div>
-        <SectionTitle subtitle="Over 12,000 businesses trust Orbix to power their communications and operations every single day.">
+        <SectionTitle subtitle="Over 12,000 Businesses Trust My Real Customer App to Power Their Communications and Operations Every Single Day.">
           Loved by businesses <span className="gradient-text">worldwide</span>
         </SectionTitle>
 

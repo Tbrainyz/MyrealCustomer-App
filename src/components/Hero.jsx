@@ -6,7 +6,7 @@ import {
   MessageSquare,
   Package,
   DollarSign,
-  BarChart2,
+  BarChart2,  
   Users,
 } from "lucide-react";
 import {
@@ -132,7 +132,9 @@ export default function Hero() {
             </div>
 
             {/* Clock */}
-            <div className={`flex items-center gap-2 text-[13px] font-mono ${dark ? "text-slate-500" : "text-slate-400"}`}>
+            <div
+              className={`flex items-center gap-4 text-[15px] font-semibold font-mono ${dark ? "text-pink-500" : "text-pink-900"}`}
+            >
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping" />
               <span>{currentTime || "Loading time..."}</span>
             </div>

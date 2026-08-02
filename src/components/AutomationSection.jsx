@@ -38,15 +38,15 @@ export default function AutomationSection() {
               text-[clamp(28px,4vw,46px)]
               ${dark ? "text-white" : "text-slate-900"}`}
             >
-              Set it up once.{" "}
-              <span className="gradient-text">Let it run forever.</span>
+              Set It Up Once.{" "}
+              <span className="gradient-text">Let It Run Forever.</span>
             </h2>
             <p
               className={`text-[clamp(15px,1.6vw,17px)] leading-relaxed mb-8
               ${dark ? "text-slate-400" : "text-slate-500"}`}
             >
-              Build sophisticated multi-step workflows with our visual Platform
-              — from simple welcome messages to complex re-engagement funnels.
+              Build Sophisticated Multi-Step Workflows With Our Visual Platform
+              — From Simple Welcome Messages To Complex Re-Engagement Funnels.
             </p>
 
             <ul className="flex flex-col gap-3">

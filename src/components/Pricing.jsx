@@ -230,7 +230,7 @@ function CheckoutModal({ plan, yearly, onClose, onSuccess }) {
         </button>
 
         <p className={`text-center text-xs mt-3 ${dark ? 'text-slate-600' : 'text-slate-400'}`}>
-          🔒 Secured by Paystack · No card stored on our servers
+          🔒 Secured By Paystack · No Card Stored On Our Servers
         </p>
       </div>
     </div>
@@ -338,8 +338,8 @@ export default function Pricing() {
         <div className="text-center">
           <SectionBadge>Pricing</SectionBadge>
         </div>
-        <SectionTitle subtitle="Choose a plan and get instant access. Cancel anytime.">
-          Simple, <span className="gradient-text">transparent pricing</span>
+        <SectionTitle subtitle="Choose a Plan and Get Instant Access. Cancel Anytime.">
+          Simple, <span className="gradient-text">Transparent Pricing</span>
         </SectionTitle>
 
         {/* Monthly / Yearly toggle */}
@@ -382,7 +382,7 @@ export default function Pricing() {
         {/* Trust row */}
         <div className={`flex flex-wrap items-center justify-center gap-6 mt-10 text-sm
           ${dark ? 'text-slate-500' : 'text-slate-400'}`}>
-          {['🔒 Secured by Paystack', '↩ Cancel anytime', '📧 Instant access after payment', '🇳🇬 NGN billing'].map(t => (
+          {['🔒 Secured by Paystack', '↩ Cancel Anytime', '📧 Instant Access After Payment', '🇳🇬 NGN Billing'].map(t => (
             <span key={t}>{t}</span>
           ))}
         </div>

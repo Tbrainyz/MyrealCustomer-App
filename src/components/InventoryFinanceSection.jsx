@@ -31,6 +31,7 @@ export default function InventoryFinanceSection() {
       />
 
       <div className="max-w-[1240px] mx-auto">
+        
         <div className="flex flex-col lg:flex-row gap-12 xl:gap-20 items-start">
 
           {/* Left: text + finance cards */}
@@ -39,12 +40,12 @@ export default function InventoryFinanceSection() {
             <h2 className={`font-display font-bold leading-tight tracking-tight mb-5
               text-[clamp(28px,4vw,46px)]
               ${dark ? 'text-white' : 'text-slate-900'}`}>
-              Full financial &amp;{' '}
-              <span className="gradient-text">stock control</span>
+              Full Financial &amp;{' '}
+              <span className="gradient-text">Stock Control</span>
             </h2>
             <p className={`text-[clamp(14px,1.6vw,16px)] leading-relaxed mb-8
               ${dark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Track inventory across warehouses, manage cash flow, create invoices, and monitor expenses — all synced with your messaging workflows.
+              Track Inventory Across Warehouses, Manage Cash Flow, Create Invoices, And Monitor Expenses — All Synced With Your Messaging Workflows.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
