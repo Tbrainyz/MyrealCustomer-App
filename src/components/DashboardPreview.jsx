@@ -46,17 +46,17 @@ const ACTIVITY = [
     dot: "#4F46E5",
   },
   {
-    text: "New Invoice #INV-0042 created for $391,200",
+    text: "New invoice #INV-0042 created for $3,200",
     time: "8m ago",
     dot: "#10B981",
   },
   {
-    text: "Stock alert: iPhone 17 Pro Max — only 3 units left",
+    text: "Stock alert: iPhone 15 Pro — only 3 units left",
     time: "15m ago",
     dot: "#F59E0B",
   },
   {
-    text: "WhatsApp bot Handled 142 Conversations",
+    text: "WhatsApp bot handled 142 conversations",
     time: "1h ago",
     dot: "#06B6D4",
   },
@@ -80,8 +80,8 @@ export default function DashboardPreview() {
         <div className="text-center">
           <SectionBadge>Live Dashboard</SectionBadge>
         </div>
-        <SectionTitle subtitle="A Unified Command Center For Your Entire Business — Messaging, Finances, Inventory, and Analytics, All in Real Time.">
-          Your Business, <span className="gradient-text">At a Glance</span>
+        <SectionTitle subtitle="A unified command center for your entire business — messaging, finances, inventory, and analytics, all in real time.">
+          Your business, <span className="gradient-text">at a glance</span>
         </SectionTitle>
 
         {/* Dashboard mockup */}

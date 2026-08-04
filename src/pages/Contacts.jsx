@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { Plus, Upload, Download, Search, Trash2, Edit2, Phone, Users, Smartphone } from 'lucide-react';
 import Header from '../components/layout/Header';
 import { Table, Modal, ConfirmDialog, EmptyState, Pagination, Spinner, StatCard } from '../components/ui';
@@ -67,6 +67,9 @@ export default function Contacts() {
   const [showModal, setShowModal]   = useState(false);
   const [editContact, setEditContact] = useState(null);
   const [deleteId, setDeleteId]     = useState(null);
+  const [importing, setImporting]   = useState(false);
+  const [exporting, setExporting]   = useState(false);
+  const importInputRef = useRef(null);
 
   const fetchContacts = useCallback(async () => {
     setLoading(true);
@@ -82,6 +85,45 @@ export default function Contacts() {
   }, [page, search]);
 
   useEffect(() => { fetchContacts(); }, [fetchContacts]);
+
+  const handleImportFile = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImporting(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await contactsAPI.import(formData);
+      toast.success(res.data?.message || 'Contacts imported successfully');
+      fetchContacts();
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Import failed. Check your file format.');
+    } finally {
+      setImporting(false);
+      if (importInputRef.current) importInputRef.current.value = '';
+    }
+  };
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      const res = await contactsAPI.exportCSV();
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `contacts_${new Date().toISOString().slice(0, 10)}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      toast.success('Contacts exported successfully');
+    } catch {
+      toast.error('Export failed');
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const stats = useMemo(() => ({
     total:     contacts.length,
@@ -135,8 +177,27 @@ export default function Contacts() {
               onChange={e => { setSearch(e.target.value); setPage(1); }} />
           </div>
           <div className="flex gap-2">
-            <button className="btn-secondary flex items-center gap-1.5"><Upload size={14} /> Import</button>
-            <button className="btn-secondary flex items-center gap-1.5"><Download size={14} /> Export</button>
+            <input
+              ref={importInputRef}
+              type="file"
+              accept=".csv,.xlsx,.xls"
+              className="hidden"
+              onChange={handleImportFile}
+            />
+            <button
+              className="btn-secondary flex items-center gap-1.5"
+              onClick={() => importInputRef.current?.click()}
+              disabled={importing}
+            >
+              <Upload size={14} /> {importing ? 'Importing...' : 'Import'}
+            </button>
+            <button
+              className="btn-secondary flex items-center gap-1.5"
+              onClick={handleExport}
+              disabled={exporting}
+            >
+              <Download size={14} /> {exporting ? 'Exporting...' : 'Export'}
+            </button>
             <button className="btn-primary flex items-center gap-1.5" onClick={() => { setEditContact(null); setShowModal(true); }}>
               <Plus size={14} /> Add Contact
             </button>

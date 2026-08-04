@@ -70,10 +70,10 @@ export default function MessagingPlatforms() {
           <SectionBadge>Integrations</SectionBadge>
         </div>
         <SectionTitle
-          subtitle="Connect Every Channel Your Customers use and Manage Everything From One Centralized, Intelligent Inbox."
+          subtitle="Connect every channel your customers use and manage everything from one centralized, intelligent inbox."
         >
-          All Your Channels,{' '}
-          <span className="gradient-text">One Inbox</span>
+          All your channels,{' '}
+          <span className="gradient-text">one inbox</span>
         </SectionTitle>
 
         <div className="flex gap-10">

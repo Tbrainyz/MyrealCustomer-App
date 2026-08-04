@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
+import SenderIdRegistration from '../components/SenderIdRegistration';
 import { User, CreditCard, Key, Bell, Shield, Building, Camera, Trash2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Header from '../components/layout/Header';
 import { useTheme } from '../context/ThemeContext';
-import { authAPI } from '../api';
+import { authAPI, getFileUrl } from '../api';
 import { Spinner } from '../components/ui';
 import toast from 'react-hot-toast';
 
@@ -58,7 +59,7 @@ function ProfileTab() {
     finally { setLoading(false); }
   };
 
-  const [preview, setPreview] = useState(user?.avatar || null);
+  const [preview, setPreview] = useState(getFileUrl(user?.avatar) || null);
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef(null);
 
@@ -78,8 +79,8 @@ function ProfileTab() {
       const r = await authAPI.updateAvatar(formData);
       updateUser(r.data.data);
       toast.success('Profile photo updated');
-    } catch {
-      toast.error('Upload failed — photo saved locally for now');
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Upload failed. Try again.');
     } finally { setUploading(false); }
   };
 
@@ -270,7 +271,7 @@ function ApiKeysTab() {
     whatsappToken: '', whatsappPhoneId: user?.apiKeys?.whatsappPhoneId || '',
     facebookToken: '', facebookPageId: user?.apiKeys?.facebookPageId || '',
     instagramToken: '',
-    smartsmsToken: '', smartsmsSenderId: user?.apiKeys?.smartsmsSenderId || '',
+    smartsmsToken: '',
   });
   const [loading, setLoading] = useState(false);
   const set = k => e => setKeys(x => ({ ...x, [k]: e.target.value }));
@@ -285,7 +286,6 @@ function ApiKeysTab() {
       if (keys.facebookPageId) payload.facebookPageId = keys.facebookPageId;
       if (keys.instagramToken)   payload.instagramToken   = keys.instagramToken;
       if (keys.smartsmsToken)    payload.smartsmsToken    = keys.smartsmsToken;
-      if (keys.smartsmsSenderId) payload.smartsmsSenderId = keys.smartsmsSenderId;
       await authAPI.updateApiKeys(payload);
       toast.success('API keys saved');
       setKeys(k => ({ ...k, whatsappToken: '', facebookToken: '', instagramToken: '', smartsmsToken: '' }));
@@ -312,10 +312,12 @@ function ApiKeysTab() {
       <div className="border-t border-slate-200 dark:border-brand-border pt-5 space-y-3">
         <h3 className="section-title">SmartSMS Solutions (SMS)</h3>
         <Field label="API Token"><input type="password" value={keys.smartsmsToken} onChange={set('smartsmsToken')} placeholder="Leave blank to keep existing" className="input font-mono text-sm" /></Field>
-        <Field label="Sender ID"><input value={keys.smartsmsSenderId} onChange={set('smartsmsSenderId')} placeholder="e.g. MYBRAND" className="input font-mono text-sm" /></Field>
-        <p className="text-xs text-brand-muted">Get your token and register a Sender ID at <a href="https://app.smartsmssolutions.com" target="_blank" rel="noopener noreferrer" className="text-primary-400 hover:underline">smartsmssolutions.com</a></p>
+        <p className="text-xs text-brand-muted">Get your token at <a href="https://app.smartsmssolutions.com" target="_blank" rel="noopener noreferrer" className="text-primary-400 hover:underline">smartsmssolutions.com</a></p>
       </div>
       <SaveBtn loading={loading} label="Save API Keys" onClick={save} />
+      <div className="border-t border-slate-200 dark:border-brand-border pt-5">
+        <SenderIdRegistration businessName={user?.settings?.businessName} />
+      </div>
       <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 text-sm text-yellow-600 dark:text-yellow-400">
         ⚠️ Keep your API keys secret. Token fields are write-only — leave blank to keep existing values.
       </div>

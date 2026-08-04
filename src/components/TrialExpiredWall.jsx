@@ -123,11 +123,11 @@ export default function TrialExpiredWall() {
           <Lock size={28} className="text-red-400" />
         </div>
         <h1 className={`text-2xl sm:text-3xl font-bold mb-2 ${dark ? 'text-white' : 'text-slate-900'}`}>
-          Your Free Trial has Ended
+          Your free trial has ended
         </h1>
         <p className={`text-sm max-w-md mx-auto ${dark ? 'text-slate-400' : 'text-slate-500'}`}>
-          Hi <strong>{user?.name?.split(' ')[0]}</strong>, Your 30-day Free Trial has Expired.
-          Subscribe to a Plan to Restore Full Access to Your Workspace.
+          Hi <strong>{user?.name?.split(' ')[0]}</strong>, your 3-day trial has expired.
+          Subscribe to a plan to restore full access to your workspace.
         </p>
       </div>
 
