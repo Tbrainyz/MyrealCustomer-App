@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Users, Send, Calendar, FileText, BarChart3,
   Receipt, Wallet, TrendingUp, Package, ArrowLeftRight,
   Settings, LogOut, Menu, X, Zap, ChevronLeft, ChevronRight,
-  UserCog,
+  UserCog, BookOpen,
 } from 'lucide-react';
 import { useAuth, ROLE_LABELS } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -35,9 +35,10 @@ const NAV = [
     group: 'Finance',
     roles: ['finance_manager'],
     items: [
-      { to: '/invoices', icon: Receipt,   label: 'Invoices'  },
-      { to: '/expenses', icon: Wallet,    label: 'Expenses'  },
-      { to: '/cashflow', icon: TrendingUp, label: 'Cash Flow' },
+      { to: '/invoices',    icon: Receipt,     label: 'Invoices'     },
+      { to: '/expenses',    icon: Wallet,      label: 'Expenses'     },
+      { to: '/cashflow',    icon: TrendingUp,  label: 'Cash Flow'    },
+      { to: '/bookkeeping', icon: BookOpen,    label: 'Book Keeping' },
     ],
   },
   {
@@ -102,7 +103,7 @@ function NavItems({ collapsed, onClose }) {
         {!collapsed && (
           <div>
             <h2 className={`font-display font-bold text-[15px] leading-tight ${dark ? 'text-white' : 'text-slate-900'}`}>
-              My Real Customer App
+              My Real Customer
             </h2>
             <p className={`text-[11px] ${dark ? 'text-slate-500' : 'text-slate-400'}`}>Business Suite</p>
           </div>

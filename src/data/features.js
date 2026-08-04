@@ -2,7 +2,7 @@ export const features = [
   {
     icon: "💬",
     title: "Multi-Platform Messaging",
-    desc: "Unified inbox for WhatsApp, Instagram, Facebook, SMS, Email and more.",
+    desc: "Unified inbox for WhatsApp, Instagram, Facebook, SMS and more.",
     color: "#4F46E5",
   },
   {
@@ -147,7 +147,7 @@ export const inventoryItems = [
     stock: 24,
     status: "In Stock",
     statusColor: "green",
-    price: "₦13,999",
+    price: "₦1,999",
   },
   {
     name: "iPhone 15 Pro",
@@ -155,7 +155,7 @@ export const inventoryItems = [
     stock: 3,
     status: "Low Stock",
     statusColor: "amber",
-    price: "₦11,199",
+    price: "₦1,199",
   },
   {
     name: "AirPods Pro",
@@ -179,7 +179,7 @@ export const inventoryItems = [
     stock: 11,
     status: "In Stock",
     statusColor: "green",
-    price: "₦19,599",
+    price: "₦1,599",
   },
 ];
 
