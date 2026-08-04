@@ -157,3 +157,8 @@ export const downloadBlob = (blobData, filename) => {
   link.remove();
   window.URL.revokeObjectURL(url);
 };
+
+export const bookkeepingAPI = {
+  getLedger: params => api.get('/bookkeeping', { params }),
+  exportCSV: params => api.get('/bookkeeping/export', { params, responseType: 'blob' }),
+};

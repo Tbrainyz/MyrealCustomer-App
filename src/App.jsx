@@ -23,6 +23,7 @@ import MessageLogs   from './pages/MessageLogs';
 import Invoices      from './pages/Invoices';
 import Expenses      from './pages/Expenses';
 import CashFlow      from './pages/CashFlow';
+import BookKeeping   from './pages/BookKeeping';
 import Inventory     from './pages/Inventory';
 import StockMovements from './pages/StockMovements';
 import Settings      from './pages/Settings';
@@ -93,6 +94,7 @@ function AppRoutes() {
       <Route path="/invoices" element={<PrivateRoute roles={['finance_manager']}><Invoices /></PrivateRoute>} />
       <Route path="/expenses" element={<PrivateRoute roles={['finance_manager']}><Expenses /></PrivateRoute>} />
       <Route path="/cashflow" element={<PrivateRoute roles={['finance_manager']}><CashFlow /></PrivateRoute>} />
+      <Route path="/bookkeeping" element={<PrivateRoute roles={['finance_manager']}><BookKeeping /></PrivateRoute>} />
 
       {/* Messaging */}
       <Route path="/contacts"  element={<PrivateRoute roles={['messaging_manager']}><Contacts /></PrivateRoute>} />
