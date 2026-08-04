@@ -4,7 +4,7 @@ import { SectionBadge, SectionTitle } from './ui/SectionTitle'
 import { GradientBlur } from './ui/GradientBlur'
 import { platforms } from '../data/features'
 
-function PlatformCard({ icon, name, glow, dark }) {
+function PlatformCard({ icon: Icon, name, glow, dark }) {
   const [hovered, setHovered] = useState(false)
 
   return (
@@ -22,15 +22,21 @@ function PlatformCard({ icon, name, glow, dark }) {
       }}
     >
       <div
-        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full mx-auto mb-3 sm:mb-4 flex items-center justify-center text-2xl sm:text-3xl border-2 transition-all duration-300"
-        style={{
-          background: `${glow}15`,
-          borderColor: hovered ? `${glow}50` : `${glow}25`,
-          boxShadow: hovered ? `0 0 24px ${glow}40` : `0 0 12px ${glow}20`,
-        }}
-      >
-        {icon}
-      </div>
+  className="w-12 h-12 sm:w-14 sm:h-14 rounded-full mx-auto mb-3 sm:mb-4 flex items-center justify-center border-2 transition-all duration-300"
+  style={{
+    background: `${glow}15`,
+    borderColor: hovered ? `${glow}50` : `${glow}25`,
+    boxShadow: hovered ? `0 0 24px ${glow}40` : `0 0 12px ${glow}20`,
+  }}
+>
+  <Icon
+    size={28}
+    color={glow}
+    className={`transition-all duration-300 ${
+      hovered ? "scale-110" : "scale-100"
+    }`}
+  />
+</div>
       <p className={`text-sm sm:text-[14px] font-bold transition-colors duration-200
         ${hovered
           ? 'text-white'
@@ -76,7 +82,7 @@ export default function MessagingPlatforms() {
           <span className="gradient-text">One Inbox</span>
         </SectionTitle>
 
-        <div className="flex gap-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 w-full">
           {platforms.map((p, i) => (
             <PlatformCard key={i} {...p} dark={dark} />
           ))}

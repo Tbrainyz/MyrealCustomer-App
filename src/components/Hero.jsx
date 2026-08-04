@@ -128,7 +128,7 @@ export default function Hero() {
                 ${dark ? "bg-white/[0.05] border-white/[0.12] text-slate-300" : "bg-white border-black/[0.1] text-slate-600 shadow-sm"}`}
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#4ade80] animate-pulse block" />
-              Welcome to MessagePro
+              Welcome to My Real Customer App
             </div>
 
             {/* Clock */}
@@ -233,7 +233,7 @@ export default function Hero() {
                 className={`flex-1 text-center text-[12px] rounded-md px-3 py-1 mx-4
                   ${dark ? "bg-white/[0.05] text-slate-500" : "bg-black/[0.04] text-slate-400"}`}
               >
-                MessagePro — Dashboard
+                My Real Customer App — Dashboard
               </div>
               <span className="text-[11px] font-semibold text-emerald-400 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 block" />{" "}
