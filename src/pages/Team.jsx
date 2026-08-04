@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import Header from '../components/layout/Header';
 import { Modal, ConfirmDialog, Spinner, EmptyState } from '../components/ui';
-import { usersAPI } from '../api';
+import { usersAPI, getFileUrl } from '../api';
 import { useTheme } from '../context/ThemeContext';
 import { ROLE_LABELS } from '../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -423,7 +423,7 @@ export default function Team() {
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden">
                             {user.avatar
-                              ? <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                              ? <img src={getFileUrl(user.avatar)} alt={user.name} className="w-full h-full object-cover" />
                               : user.name?.[0]?.toUpperCase()
                             }
                           </div>

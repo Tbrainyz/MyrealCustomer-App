@@ -195,10 +195,10 @@ export default function Dashboard() {
             </div>
             <div>
               <p className={`text-sm font-semibold ${dark ? 'text-white' : 'text-slate-800'}`}>
-                You Are Signed In As {ROLE_LABELS[user?.role]}
+                You are signed in as {ROLE_LABELS[user?.role]}
               </p>
               <p className="text-xs text-brand-muted mt-0.5">
-                Your Access is Limited To Your Assigned Section. Contact Your Administrator for Changes.
+                Your access is limited to your assigned section. Contact your administrator for changes.
               </p>
             </div>
           </div>

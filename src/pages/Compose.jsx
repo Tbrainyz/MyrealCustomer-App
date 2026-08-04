@@ -4,8 +4,6 @@ import Header from '../components/layout/Header';
 import { messagesAPI, contactsAPI, templatesAPI } from '../api';
 import { Spinner, Modal } from '../components/ui';
 import toast from 'react-hot-toast';
-
-
 const PLATFORMS = [
   {
     value: 'whatsapp',

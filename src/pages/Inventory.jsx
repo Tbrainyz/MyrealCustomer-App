@@ -4,7 +4,9 @@ import {
   Package,
   Edit2,
   Trash2,
-  AlertTriangle
+  AlertTriangle,
+  Download,
+  FileSpreadsheet
 } from "lucide-react";
 
 import Header from "../components/layout/Header";
@@ -17,7 +19,7 @@ import {
   Spinner
 } from "../components/ui";
 
-import { inventoryAPI } from "../api";
+import { inventoryAPI, downloadBlob } from "../api";
 import toast from "react-hot-toast";
 
 /* ----------------------------- PRODUCT MODAL ----------------------------- */
@@ -233,6 +235,8 @@ export default function Inventory() {
   const [editProduct, setEditProduct] = useState(null);
   const [stockProduct, setStockProduct] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const [exporting, setExporting] = useState(false);
+  const [exportingMovements, setExportingMovements] = useState(false);
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -253,6 +257,28 @@ export default function Inventory() {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
+  const handleExportProducts = async () => {
+    setExporting(true);
+    try {
+      const res = await inventoryAPI.exportCSV();
+      downloadBlob(res.data, `products_${new Date().toISOString().slice(0, 10)}.xlsx`);
+      toast.success("Products exported");
+    } catch {
+      toast.error("Export failed");
+    } finally { setExporting(false); }
+  };
+
+  const handleExportMovements = async () => {
+    setExportingMovements(true);
+    try {
+      const res = await inventoryAPI.exportMovements();
+      downloadBlob(res.data, `stock_movements_${new Date().toISOString().slice(0, 10)}.xlsx`);
+      toast.success("Stock movements report generated");
+    } catch {
+      toast.error("Report generation failed");
+    } finally { setExportingMovements(false); }
+  };
 
   const lowStock = useMemo(
     () =>
@@ -341,6 +367,15 @@ export default function Inventory() {
             className="card p-4 flex items-center justify-center gap-2 hover:bg-primary-500/10"
           >
             <Plus size={16} /> New Product
+          </button>
+        </div>
+
+        <div className="flex justify-end gap-2">
+          <button onClick={handleExportProducts} disabled={exporting} className="btn-secondary flex items-center gap-2">
+            <Download size={14} /> {exporting ? 'Exporting...' : 'Export Products'}
+          </button>
+          <button onClick={handleExportMovements} disabled={exportingMovements} className="btn-secondary flex items-center gap-2">
+            <FileSpreadsheet size={14} /> {exportingMovements ? 'Generating...' : 'Stock Movements Report'}
           </button>
         </div>
 

@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { Plus, Wallet, Trash2, Edit2 } from 'lucide-react';
+import { Plus, Wallet, Trash2, Edit2, Download } from 'lucide-react';
 import Header from '../components/layout/Header';
 import { Table, Modal, ConfirmDialog, EmptyState, Pagination, Spinner } from '../components/ui';
-import { expensesAPI } from '../api';
+import { expensesAPI, downloadBlob } from '../api';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 
@@ -56,6 +56,7 @@ export default function Expenses() {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [modal, setModal] = useState(null);
+  const [exporting, setExporting] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [catFilter, setCatFilter] = useState('all');
 
@@ -71,6 +72,17 @@ export default function Expenses() {
   }, [page, catFilter]);
 
   useEffect(() => { fetchExpenses(); }, [fetchExpenses]);
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      const res = await expensesAPI.exportCSV();
+      downloadBlob(res.data, `expenses_${new Date().toISOString().slice(0, 10)}.xlsx`);
+      toast.success('Expenses exported');
+    } catch {
+      toast.error('Export failed');
+    } finally { setExporting(false); }
+  };
 
   const total = useMemo(() => expenses.reduce((s, e) => s + Number(e.amount || 0), 0), [expenses]);
 
@@ -116,6 +128,9 @@ export default function Expenses() {
                 <option value="all">All Categories</option>
                 {CATS.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
+              <button onClick={handleExport} disabled={exporting} className="btn-secondary gap-2">
+                <Download size={15} /> {exporting ? 'Exporting...' : 'Export'}
+              </button>
               <button onClick={() => setModal({})} className="btn-primary gap-2"><Plus size={15} /> Add Expense</button>
             </div>
           </div>

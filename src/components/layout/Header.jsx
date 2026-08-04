@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { getFileUrl } from '../../api';
 
 const SUGGESTIONS = [
   'Dashboard overview', 'Send a message', 'View contacts', 'Create invoice',
@@ -11,7 +12,7 @@ const SUGGESTIONS = [
   'Message templates', 'Scheduled messages', 'Message logs', 'Settings',
 ];
 
-export default function Header({ title, subtitle, onMobileMenuClick }) {
+export default function Header({ title, subtitle, onMobileMenuClick, showSearch = false }) {
   const { user, logout } = useAuth();
   const { dark, toggleTheme } = useTheme();
   const navigate = useNavigate();
@@ -91,6 +92,7 @@ export default function Header({ title, subtitle, onMobileMenuClick }) {
         <div className="flex items-center gap-2 shrink-0">
 
           {/* SEARCH */}
+          {showSearch && (
           <div className="relative hidden md:block" ref={searchRef}>
             <Search size={14} className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none transition-colors ${searchOpen ? 'text-primary-500' : dark ? 'text-slate-500' : 'text-slate-400'}`} />
             <input
@@ -127,6 +129,7 @@ export default function Header({ title, subtitle, onMobileMenuClick }) {
               </div>
             )}
           </div>
+          )}
 
           {/* THEME TOGGLE */}
           <button
@@ -149,8 +152,11 @@ export default function Header({ title, subtitle, onMobileMenuClick }) {
               onClick={() => setProfileOpen(v => !v)}
               className={`flex items-center gap-2 pl-1 pr-2.5 h-9 rounded-xl border transition-all duration-200 ${iconBtn}`}
             >
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
-                {user?.name?.[0]?.toUpperCase() || 'U'}
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden">
+                {user?.avatar
+                  ? <img src={getFileUrl(user.avatar)} alt="avatar" className="w-full h-full object-cover" />
+                  : (user?.name?.[0]?.toUpperCase() || 'U')
+                }
               </div>
               <span className={`text-sm font-medium hidden lg:block ${dark ? 'text-white' : 'text-slate-800'}`}>
                 {user?.name?.split(' ')[0] || 'User'}
