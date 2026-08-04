@@ -6,41 +6,47 @@ import { Spinner, Modal } from '../components/ui';
 import toast from 'react-hot-toast';
 const PLATFORMS = [
   {
-    value: 'whatsapp',
-    label: 'WhatsApp',
-    emoji: '💬',
-    canMedia: true
+    value: "whatsapp",
+    label: "WhatsApp",
+    icon: FaWhatsapp,
+    color: "#25D366",
+    canMedia: true,
   },
   {
-    value: 'facebook',
-    label: 'Facebook',
-    emoji: '📘',
-    canMedia: true
+    value: "facebook",
+    label: "Facebook",
+    icon: FaFacebook,
+    color: "#1877F2",
+    canMedia: true,
   },
   {
-    value: 'instagram',
-    label: 'Instagram',
-    emoji: '📸',
-    canMedia: true
+    value: "instagram",
+    label: "Instagram",
+    icon: FaInstagram,
+    color: "#E1306C",
+    canMedia: true,
   },
   {
-    value: 'sms',
-    label: 'SMS',
-    emoji: '📱',
-    canMedia: false
+    value: "sms",
+    label: "SMS",
+    icon: MdSms,
+    color: "#8B5CF6",
+    canMedia: false,
   },
   {
-    value: 'email',
-    label: 'Email',
-    emoji: '📧',
-    canMedia: true
+    value: "email",
+    label: "Email",
+    icon: MdEmail,
+    color: "#F59E0B",
+    canMedia: true,
   },
   {
-    value: 'tiktok',
-    label: 'TikTok',
-    emoji: '🎵',
-    canMedia: true
-  }
+    value: "tiktok",
+    label: "TikTok",
+    icon: FaTiktok,
+    color: "#EE1D52",
+    canMedia: true,
+  },
 ];
 
 const VARS = ['{{FirstName}}', '{{Company}}', '{{Phone}}', '{{Date}}'];
@@ -199,23 +205,27 @@ export default function Compose() {
               <h3 className="section-title mb-4">Select Platform</h3>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {PLATFORMS.map(p => (
-                  <button
-                    key={p.value}
-                    onClick={() => {
-                      setPlatform(p.value);
-                      setMedia([]); // reset media on switch
-                    }}
-                    className={`p-4 rounded-xl border-2 text-sm font-medium flex flex-col items-center gap-2 ${
-                      platform === p.value
-                        ? 'border-primary-500 bg-primary-500/10 text-primary-400'
-                        : 'border-brand-border text-brand-muted'
-                    }`}
-                  >
-                    <span className="text-2xl">{p.emoji}</span>
-                    {p.label}
-                  </button>
-                ))}
+                {PLATFORMS.map((p) => {
+  const Icon = p.icon;
+
+  return (
+    <button
+      key={p.value}
+      onClick={() => {
+        setPlatform(p.value);
+        setMedia([]);
+      }}
+      className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-all ${
+        platform === p.value
+          ? "border-primary-500 bg-primary-500/10"
+          : "border-brand-border hover:border-primary-300"
+      }`}
+    >
+      <Icon size={28} color={p.color} />
+      <span>{p.label}</span>
+    </button>
+  );
+})}
               </div>
             </div>
 
