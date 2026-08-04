@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useAuth, ROLE_LABELS } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import { getFileUrl } from '../../api';
 
 // ─── Full nav definition ───────────────────────────────────────────────────────
 // Each item has an optional `roles` array — if present, only those roles see it.
@@ -148,7 +149,7 @@ function NavItems({ collapsed, onClose }) {
           <div className="relative shrink-0">
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold overflow-hidden">
               {user?.avatar
-                ? <img src={user.avatar} alt="avatar" className="w-full h-full object-cover" />
+                ? <img src={getFileUrl(user.avatar)} alt="avatar" className="w-full h-full object-cover" />
                 : user?.name?.[0]?.toUpperCase()
               }
             </div>
