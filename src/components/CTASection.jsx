@@ -39,7 +39,7 @@ export default function CTASection() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full text-xs font-semibold text-indigo-300 bg-indigo-500/15 border border-indigo-500/25">
               <Sparkles size={13} />
-              Start Scaling Today
+              Start scaling today
             </div>
 
             <h2
@@ -51,8 +51,8 @@ export default function CTASection() {
             </h2>
 
             <p className="text-[clamp(15px,1.8vw,18px)] text-white/60 max-w-lg mx-auto mb-10 leading-relaxed">
-              Join 100+ Businesses Using My Real Customer App to Automate
-              Communication, Inventory, And Financial Operations.
+              Join 100+ businesses using My Real Customer App to automate
+              communication, inventory, and financial operations.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3.5 justify-center items-center">

@@ -47,10 +47,10 @@ export default function AnalyticsSection() {
           <SectionBadge>Analytics &amp; Insights</SectionBadge>
         </div>
         <SectionTitle
-          subtitle="Automated-Powered Analytics Give You The Insights To Optimize Campaigns, Reduce Churn, And Scale Faster."
+          subtitle="AI-powered analytics give you the insights to optimize campaigns, reduce churn, and scale faster."
         >
-          Data-Driven Decisions,{' '}
-          <span className="gradient-text">Always</span>
+          Data-driven decisions,{' '}
+          <span className="gradient-text">always</span>
         </SectionTitle>
 
         {/* KPI cards */}

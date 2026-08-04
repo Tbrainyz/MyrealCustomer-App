@@ -4,10 +4,11 @@ import {
   LayoutDashboard, Users, Send, Calendar, FileText, BarChart3,
   Receipt, Wallet, TrendingUp, Package, ArrowLeftRight,
   Settings, LogOut, Menu, X, Zap, ChevronLeft, ChevronRight,
-  UserCog,
+  UserCog, BookOpen,
 } from 'lucide-react';
 import { useAuth, ROLE_LABELS } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import { getFileUrl } from '../../api';
 
 // ─── Full nav definition ───────────────────────────────────────────────────────
 // Each item has an optional `roles` array — if present, only those roles see it.
@@ -34,9 +35,10 @@ const NAV = [
     group: 'Finance',
     roles: ['finance_manager'],
     items: [
-      { to: '/invoices', icon: Receipt,   label: 'Invoices'  },
-      { to: '/expenses', icon: Wallet,    label: 'Expenses'  },
-      { to: '/cashflow', icon: TrendingUp, label: 'Cash Flow' },
+      { to: '/invoices',    icon: Receipt,     label: 'Invoices'     },
+      { to: '/expenses',    icon: Wallet,      label: 'Expenses'     },
+      { to: '/cashflow',    icon: TrendingUp,  label: 'Cash Flow'    },
+      { to: '/bookkeeping', icon: BookOpen,    label: 'Book Keeping' },
     ],
   },
   {
@@ -101,7 +103,7 @@ function NavItems({ collapsed, onClose }) {
         {!collapsed && (
           <div>
             <h2 className={`font-display font-bold text-[15px] leading-tight ${dark ? 'text-white' : 'text-slate-900'}`}>
-              My Real Customer App
+              My Real Customer
             </h2>
             <p className={`text-[11px] ${dark ? 'text-slate-500' : 'text-slate-400'}`}>Business Suite</p>
           </div>
@@ -148,7 +150,7 @@ function NavItems({ collapsed, onClose }) {
           <div className="relative shrink-0">
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold overflow-hidden">
               {user?.avatar
-                ? <img src={user.avatar} alt="avatar" className="w-full h-full object-cover" />
+                ? <img src={getFileUrl(user.avatar)} alt="avatar" className="w-full h-full object-cover" />
                 : user?.name?.[0]?.toUpperCase()
               }
             </div>

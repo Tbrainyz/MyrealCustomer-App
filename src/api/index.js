@@ -95,6 +95,8 @@ export const invoicesAPI = {
   update:  (id, data) => api.put(`/invoices/${id}`, data),
   delete:  id         => api.delete(`/invoices/${id}`),
   markPaid: id        => api.put(`/invoices/${id}/paid`),
+  exportCSV:      ()  => api.get('/invoices/export', { responseType: 'blob' }),
+  exportFinanceReport: () => api.get('/invoices/finance-report', { responseType: 'blob' }),
 };
 
 export const expensesAPI = {
@@ -102,6 +104,7 @@ export const expensesAPI = {
   create:  data       => api.post('/expenses', data),
   update:  (id, data) => api.put(`/expenses/${id}`, data),
   delete:  id         => api.delete(`/expenses/${id}`),
+  exportCSV: ()       => api.get('/expenses/export', { responseType: 'blob' }),
 };
 
 export const inventoryAPI = {
@@ -112,6 +115,8 @@ export const inventoryAPI = {
   delete:       id         => api.delete(`/inventory/${id}`),
   addMovement:  data       => api.post('/inventory/movements', data),
   getMovements: params     => api.get('/inventory/movements', { params }),
+  exportCSV:         ()    => api.get('/inventory/export', { responseType: 'blob' }),
+  exportMovements:   ()    => api.get('/inventory/movements/export', { responseType: 'blob' }),
 };
 
 export const paymentsAPI = {
@@ -126,4 +131,34 @@ export const subscriptionAPI = {
   getStatus:   ()     => api.get('/subscription/status'),
   activate:    data   => api.post('/subscription/activate', data),
   devBypass:   secret => api.post('/subscription/dev-bypass', { secret }),
+};
+
+export const senderIdAPI = {
+  suggest: ()   => api.get('/sender-id/suggest'),
+  status:  ()   => api.get('/sender-id/status'),
+  submit:  data => api.post('/sender-id/submit', data),
+};
+
+// Build a full URL for uploaded files (avatars etc.) served from the backend
+export const getFileUrl = (path) => {
+  if (!path) return null;
+  if (path.startsWith('http')) return path; // already absolute (e.g. base64 preview)
+  return `${API_BASE_URL}${path}`;
+};
+
+// Trigger a browser download from a blob response
+export const downloadBlob = (blobData, filename) => {
+  const url = window.URL.createObjectURL(new Blob([blobData]));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(url);
+};
+
+export const bookkeepingAPI = {
+  getLedger: params => api.get('/bookkeeping', { params }),
+  exportCSV: params => api.get('/bookkeeping/export', { params, responseType: 'blob' }),
 };

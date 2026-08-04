@@ -35,7 +35,7 @@ export const features = [
   {
     icon: RiMessage2Fill,
     title: "Multi-Platform Messaging",
-    desc: "Unified inbox for WhatsApp, Instagram, Facebook, SMS, Email and more.",
+    desc: "Unified inbox for WhatsApp, Instagram, Facebook, SMS and more.",
     color: "#4F46E5",
   },
   {

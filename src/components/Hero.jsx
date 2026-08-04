@@ -6,7 +6,7 @@ import {
   MessageSquare,
   Package,
   DollarSign,
-  BarChart2,  
+  BarChart2,
   Users,
 } from "lucide-react";
 import {
@@ -72,10 +72,10 @@ function useTypewriter() {
 }
 
 const KPIS = [
-  { label: "Revenue", val: "₦52.8K", chg: "+18.2%", up: true },
-  { label: "Messages", val: "16,920", chg: "+31.4%", up: true },
-  { label: "Contacts", val: "4,281", chg: "+8.7%", up: true },
-  { label: "Automations", val: "2,847", chg: "+52%", up: true },
+  { label: "Revenue",     val: "₦52.8K",  chg: "+18.2%", up: true },
+  { label: "Messages",    val: "16,920",   chg: "+31.4%", up: true },
+  { label: "Contacts",    val: "4,281",    chg: "+8.7%",  up: true },
+  { label: "Automations", val: "2,847",    chg: "+52%",   up: true },
 ];
 
 const SIDEBAR_ICONS = [
@@ -118,8 +118,10 @@ export default function Hero() {
       <div className="absolute inset-0 grid-overlay pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* ── Text content ── */}
         <div className="text-center mb-14">
+
           {/* Badge + Clock row */}
           <div className="flex flex-col items-center gap-3 mb-7">
             {/* Eyebrow badge */}
@@ -132,9 +134,7 @@ export default function Hero() {
             </div>
 
             {/* Clock */}
-            <div
-              className={`flex items-center gap-4 text-[15px] font-semibold font-mono ${dark ? "text-pink-500" : "text-pink-900"}`}
-            >
+            <div className={`flex items-center gap-2 text-[13px] font-mono ${dark ? "text-slate-500" : "text-slate-400"}`}>
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping" />
               <span>{currentTime || "Loading time..."}</span>
             </div>
@@ -165,9 +165,9 @@ export default function Hero() {
             className={`text-[clamp(15px,1.8vw,19px)] leading-relaxed max-w-2xl mx-auto mb-10
               ${dark ? "text-slate-400" : "text-slate-500"}`}
           >
-            Manage WhatsApp, Instagram, Facebook, Sms, Email, Bookkeeping, Stock
-            Mangement, Inventory, Invoicing, CRM contacts, and Automation
-            Workflows — All From One Centralized Dashboard.
+            Manage WhatsApp, Instagram, Facebook, TikTok, Bookkeeping,
+            Inventory, Invoicing, CRM contacts, and Automation Workflows — All
+            From One Centralized Dashboard.
           </p>
 
           {/* CTA */}
@@ -176,9 +176,7 @@ export default function Hero() {
               variant="primary"
               size="xl"
               onClick={() =>
-                document
-                  .getElementById("pricing")
-                  ?.scrollIntoView({ behavior: "smooth" })
+                document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })
               }
             >
               <span>⚡</span> Get Started <ArrowRight size={18} />
@@ -195,9 +193,7 @@ export default function Hero() {
                 >
                   {s.value}
                 </div>
-                <div
-                  className={`text-xs mt-1.5 ${dark ? "text-slate-500" : "text-slate-400"}`}
-                >
+                <div className={`text-xs mt-1.5 ${dark ? "text-slate-500" : "text-slate-400"}`}>
                   {s.label}
                 </div>
               </div>
@@ -209,10 +205,9 @@ export default function Hero() {
         <div className="animate-float max-w-[960px] mx-auto">
           <div
             className={`rounded-2xl overflow-hidden border
-              ${
-                dark
-                  ? "border-white/[0.1] shadow-[0_32px_80px_rgba(0,0,0,0.6),0_0_0_1px_rgba(255,255,255,0.05)] bg-[#0d1117]"
-                  : "border-black/[0.1] shadow-[0_32px_80px_rgba(0,0,0,0.12)] bg-white"
+              ${dark
+                ? "border-white/[0.1] shadow-[0_32px_80px_rgba(0,0,0,0.6),0_0_0_1px_rgba(255,255,255,0.05)] bg-[#0d1117]"
+                : "border-black/[0.1] shadow-[0_32px_80px_rgba(0,0,0,0.12)] bg-white"
               }`}
           >
             {/* Title bar */}
@@ -222,11 +217,7 @@ export default function Hero() {
             >
               <div className="flex gap-1.5">
                 {["#FF5F57", "#FFBD2E", "#28CA41"].map((c) => (
-                  <span
-                    key={c}
-                    className="w-3 h-3 rounded-full block"
-                    style={{ background: c }}
-                  />
+                  <span key={c} className="w-3 h-3 rounded-full block" style={{ background: c }} />
                 ))}
               </div>
               <div
@@ -236,8 +227,7 @@ export default function Hero() {
                 My Real Customer App — Dashboard
               </div>
               <span className="text-[11px] font-semibold text-emerald-400 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 block" />{" "}
-                Live
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 block" /> Live
               </span>
             </div>
 
@@ -252,12 +242,11 @@ export default function Hero() {
                   <div
                     key={i}
                     className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors
-                      ${
-                        active
-                          ? "bg-indigo-500/20 text-indigo-400"
-                          : dark
-                            ? "text-slate-600 hover:text-slate-400"
-                            : "text-slate-400 hover:text-slate-600"
+                      ${active
+                        ? "bg-indigo-500/20 text-indigo-400"
+                        : dark
+                          ? "text-slate-600 hover:text-slate-400"
+                          : "text-slate-400 hover:text-slate-600"
                       }`}
                   >
                     <Icon size={16} />
@@ -275,22 +264,16 @@ export default function Hero() {
                       className={`rounded-xl p-3 border
                         ${dark ? "bg-white/[0.04] border-white/[0.07]" : "bg-slate-50 border-black/[0.06]"}`}
                     >
-                      <div
-                        className={`text-[10px] font-medium uppercase tracking-wide mb-1
-                        ${dark ? "text-slate-500" : "text-slate-400"}`}
-                      >
+                      <div className={`text-[10px] font-medium uppercase tracking-wide mb-1
+                        ${dark ? "text-slate-500" : "text-slate-400"}`}>
                         {k.label}
                       </div>
-                      <div
-                        className={`font-display font-bold text-lg sm:text-xl leading-none
-                        ${dark ? "text-white" : "text-slate-900"}`}
-                      >
+                      <div className={`font-display font-bold text-lg sm:text-xl leading-none
+                        ${dark ? "text-white" : "text-slate-900"}`}>
                         {k.val}
                       </div>
-                      <div
-                        className={`text-[10px] mt-1.5 flex items-center gap-1 font-semibold
-                        ${k.up ? "text-emerald-400" : "text-red-400"}`}
-                      >
+                      <div className={`text-[10px] mt-1.5 flex items-center gap-1 font-semibold
+                        ${k.up ? "text-emerald-400" : "text-red-400"}`}>
                         <TrendingUp size={10} /> {k.chg}
                       </div>
                     </div>
@@ -299,99 +282,42 @@ export default function Hero() {
 
                 {/* Charts row */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  <div
-                    className={`rounded-xl p-3 border
-                    ${dark ? "bg-white/[0.03] border-white/[0.06]" : "bg-slate-50/80 border-black/[0.05]"}`}
-                  >
-                    <p
-                      className={`text-[11px] font-semibold mb-2 ${dark ? "text-slate-300" : "text-slate-700"}`}
-                    >
+                  <div className={`rounded-xl p-3 border
+                    ${dark ? "bg-white/[0.03] border-white/[0.06]" : "bg-slate-50/80 border-black/[0.05]"}`}>
+                    <p className={`text-[11px] font-semibold mb-2 ${dark ? "text-slate-300" : "text-slate-700"}`}>
                       Revenue Growth
                     </p>
                     <ResponsiveContainer width="100%" height={90}>
                       <AreaChart data={chartData}>
                         <defs>
-                          <linearGradient
-                            id="rev-grad"
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                          >
-                            <stop
-                              offset="5%"
-                              stopColor="#4F46E5"
-                              stopOpacity={0.3}
-                            />
-                            <stop
-                              offset="95%"
-                              stopColor="#4F46E5"
-                              stopOpacity={0}
-                            />
+                          <linearGradient id="rev-grad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%"  stopColor="#4F46E5" stopOpacity={0.3} />
+                            <stop offset="95%" stopColor="#4F46E5" stopOpacity={0} />
                           </linearGradient>
                         </defs>
-                        <XAxis
-                          dataKey="month"
-                          tick={{ fontSize: 9, fill: "#64748b" }}
-                          axisLine={false}
-                          tickLine={false}
-                        />
+                        <XAxis dataKey="month" tick={{ fontSize: 9, fill: "#64748b" }} axisLine={false} tickLine={false} />
                         <Tooltip
-                          contentStyle={{
-                            background: "#1e293b",
-                            border: "none",
-                            borderRadius: 8,
-                            fontSize: 11,
-                          }}
-                          formatter={(v) => [
-                            `₦${v.toLocaleString()}`,
-                            "Revenue",
-                          ]}
+                          contentStyle={{ background: "#1e293b", border: "none", borderRadius: 8, fontSize: 11 }}
+                          formatter={(v) => [`₦${v.toLocaleString()}`, "Revenue"]}
                         />
-                        <Area
-                          type="monotone"
-                          dataKey="revenue"
-                          stroke="#4F46E5"
-                          fill="url(#rev-grad)"
-                          strokeWidth={2}
-                          dot={false}
-                        />
+                        <Area type="monotone" dataKey="revenue" stroke="#4F46E5" fill="url(#rev-grad)" strokeWidth={2} dot={false} />
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
 
-                  <div
-                    className={`rounded-xl p-3 border
-                    ${dark ? "bg-white/[0.03] border-white/[0.06]" : "bg-slate-50/80 border-black/[0.05]"}`}
-                  >
-                    <p
-                      className={`text-[11px] font-semibold mb-2 ${dark ? "text-slate-300" : "text-slate-700"}`}
-                    >
+                  <div className={`rounded-xl p-3 border
+                    ${dark ? "bg-white/[0.03] border-white/[0.06]" : "bg-slate-50/80 border-black/[0.05]"}`}>
+                    <p className={`text-[11px] font-semibold mb-2 ${dark ? "text-slate-300" : "text-slate-700"}`}>
                       Message Volume
                     </p>
                     <ResponsiveContainer width="100%" height={90}>
                       <BarChart data={chartData}>
-                        <XAxis
-                          dataKey="month"
-                          tick={{ fontSize: 9, fill: "#64748b" }}
-                          axisLine={false}
-                          tickLine={false}
-                        />
+                        <XAxis dataKey="month" tick={{ fontSize: 9, fill: "#64748b" }} axisLine={false} tickLine={false} />
                         <Tooltip
-                          contentStyle={{
-                            background: "#1e293b",
-                            border: "none",
-                            borderRadius: 8,
-                            fontSize: 11,
-                          }}
+                          contentStyle={{ background: "#1e293b", border: "none", borderRadius: 8, fontSize: 11 }}
                           formatter={(v) => [v.toLocaleString(), "Messages"]}
                         />
-                        <Bar
-                          dataKey="messages"
-                          fill="#06B6D4"
-                          radius={[3, 3, 0, 0]}
-                          opacity={0.8}
-                        />
+                        <Bar dataKey="messages" fill="#06B6D4" radius={[3, 3, 0, 0]} opacity={0.8} />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
@@ -400,6 +326,7 @@ export default function Hero() {
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );

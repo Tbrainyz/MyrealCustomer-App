@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Plus, Edit2, Trash2, CheckCircle, Receipt, Clock, DollarSign } from 'lucide-react';
+import { Plus, Edit2, Trash2, CheckCircle, Receipt, Clock, DollarSign, Download, FileSpreadsheet } from 'lucide-react';
 import Header from '../components/layout/Header';
 import { Table, StatusBadge, Modal, ConfirmDialog, Pagination, EmptyState, Spinner } from '../components/ui';
-import { invoicesAPI } from '../api';
+import { invoicesAPI, downloadBlob } from '../api';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 import { useTheme } from '../context/ThemeContext';
@@ -196,6 +196,8 @@ export default function Invoices() {
   const [showModal, setShowModal]   = useState(false);
   const [editInvoice, setEditInvoice] = useState(null);
   const [deleteId, setDeleteId]     = useState(null);
+  const [exporting, setExporting]         = useState(false);
+  const [exportingReport, setExportingReport] = useState(false);
 
   const fetchInvoices = useCallback(async () => {
     setLoading(true);
@@ -208,6 +210,28 @@ export default function Invoices() {
   }, [page]);
 
   useEffect(() => { fetchInvoices(); }, [fetchInvoices]);
+
+  const handleExportInvoices = async () => {
+    setExporting(true);
+    try {
+      const res = await invoicesAPI.exportCSV();
+      downloadBlob(res.data, `invoices_${new Date().toISOString().slice(0, 10)}.xlsx`);
+      toast.success('Invoices exported');
+    } catch {
+      toast.error('Export failed');
+    } finally { setExporting(false); }
+  };
+
+  const handleExportFinanceReport = async () => {
+    setExportingReport(true);
+    try {
+      const res = await invoicesAPI.exportFinanceReport();
+      downloadBlob(res.data, `finance_report_${new Date().toISOString().slice(0, 10)}.xlsx`);
+      toast.success('Finance report generated');
+    } catch {
+      toast.error('Report generation failed');
+    } finally { setExportingReport(false); }
+  };
 
   const markPaid = async id => {
     try { await invoicesAPI.markPaid(id); toast.success('Marked as paid'); fetchInvoices(); }
@@ -289,7 +313,13 @@ export default function Invoices() {
         </div>
 
         {/* Action */}
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-2">
+          <button className="btn-secondary flex items-center gap-2" onClick={handleExportInvoices} disabled={exporting}>
+            <Download size={14} /> {exporting ? 'Exporting...' : 'Export Invoices'}
+          </button>
+          <button className="btn-secondary flex items-center gap-2" onClick={handleExportFinanceReport} disabled={exportingReport}>
+            <FileSpreadsheet size={14} /> {exportingReport ? 'Generating...' : 'Finance Report'}
+          </button>
           <button className="btn-primary flex items-center gap-2" onClick={() => { setEditInvoice(null); setShowModal(true); }}>
             <Plus size={14} /> New Invoice
           </button>
