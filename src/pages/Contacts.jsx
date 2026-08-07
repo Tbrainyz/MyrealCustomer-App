@@ -3,6 +3,7 @@ import { Plus, Upload, Download, Search, Trash2, Edit2, Phone, Users, Smartphone
 import Header from '../components/layout/Header';
 import { Table, Modal, ConfirmDialog, EmptyState, Pagination, Spinner, StatCard } from '../components/ui';
 import { contactsAPI } from '../api';
+import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 function ContactModal({ contact, onClose, onSave }) {
@@ -59,6 +60,7 @@ function ContactModal({ contact, onClose, onSave }) {
 }
 
 export default function Contacts() {
+  const { isAdmin } = useAuth();
   const [contacts, setContacts]     = useState([]);
   const [loading, setLoading]       = useState(true);
   const [page, setPage]             = useState(1);
@@ -191,13 +193,15 @@ export default function Contacts() {
             >
               <Upload size={14} /> {importing ? 'Importing...' : 'Import'}
             </button>
-            <button
-              className="btn-secondary flex items-center gap-1.5"
-              onClick={handleExport}
-              disabled={exporting}
-            >
-              <Download size={14} /> {exporting ? 'Exporting...' : 'Export'}
-            </button>
+            {isAdmin && (
+              <button
+                className="btn-secondary flex items-center gap-1.5"
+                onClick={handleExport}
+                disabled={exporting}
+              >
+                <Download size={14} /> {exporting ? 'Exporting...' : 'Export'}
+              </button>
+            )}
             <button className="btn-primary flex items-center gap-1.5" onClick={() => { setEditContact(null); setShowModal(true); }}>
               <Plus size={14} /> Add Contact
             </button>
