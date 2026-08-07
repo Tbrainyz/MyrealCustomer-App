@@ -35,10 +35,9 @@ const NAV = [
     group: 'Finance',
     roles: ['finance_manager'],
     items: [
-      { to: '/invoices',    icon: Receipt,     label: 'Invoices'     },
-      { to: '/expenses',    icon: Wallet,      label: 'Expenses'     },
-      { to: '/cashflow',    icon: TrendingUp,  label: 'Cash Flow'    },
-      { to: '/bookkeeping', icon: BookOpen,    label: 'Book Keeping' },
+      { to: '/invoices', icon: Receipt,    label: 'Invoices'  },
+      { to: '/expenses', icon: Wallet,     label: 'Expenses'  },
+      { to: '/cashflow', icon: TrendingUp, label: 'Cash Flow' },
     ],
   },
   {
@@ -47,6 +46,12 @@ const NAV = [
     items: [
       { to: '/inventory',       icon: Package,        label: 'Products'        },
       { to: '/stock-movements', icon: ArrowLeftRight, label: 'Stock Movements' },
+    ],
+  },
+  {
+    group: 'Book Keeping',
+    items: [
+      { to: '/bookkeeping', icon: BookOpen, label: 'Ledger', adminOnly: true },
     ],
   },
   {

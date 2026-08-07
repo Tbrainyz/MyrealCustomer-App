@@ -3,6 +3,7 @@ import { Plus, Wallet, Trash2, Edit2, Download } from 'lucide-react';
 import Header from '../components/layout/Header';
 import { Table, Modal, ConfirmDialog, EmptyState, Pagination, Spinner } from '../components/ui';
 import { expensesAPI, downloadBlob } from '../api';
+import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 
@@ -51,6 +52,7 @@ function ExpenseModal({ expense, onClose, onSave }) {
 }
 
 export default function Expenses() {
+  const { isAdmin } = useAuth();
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -128,10 +130,12 @@ export default function Expenses() {
                 <option value="all">All Categories</option>
                 {CATS.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
-              <button onClick={handleExport} disabled={exporting} className="btn-secondary gap-2">
-                <Download size={15} /> {exporting ? 'Exporting...' : 'Export'}
-              </button>
               <button onClick={() => setModal({})} className="btn-primary gap-2"><Plus size={15} /> Add Expense</button>
+              {isAdmin && (
+                <button onClick={handleExport} disabled={exporting} className="btn-secondary gap-2">
+                  <Download size={15} /> {exporting ? 'Exporting...' : 'Export'}
+                </button>
+              )}
             </div>
           </div>
           <div className="p-4">
