@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Send, ImagePlus, X } from 'lucide-react';
+import { FaWhatsapp, FaFacebook, FaInstagram, FaTiktok } from 'react-icons/fa';
+import { MdSms, MdEmail } from 'react-icons/md';
 import Header from '../components/layout/Header';
 import { messagesAPI, contactsAPI, templatesAPI } from '../api';
 import { Spinner, Modal } from '../components/ui';
@@ -387,7 +389,7 @@ export default function Compose() {
             <button
               onClick={() => setConfirm(true)}
               disabled={!content || !selected.length}
-              className="btn-primary w-full mt-4"
+              className="btn-primary w-full"
             >
               <Send size={14} /> Send ({selected.length})
             </button>
