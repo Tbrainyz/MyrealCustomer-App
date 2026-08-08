@@ -38,7 +38,7 @@ export default function Navbar({ scrolled }) {
 
           <div className="hidden md:flex items-center gap-1">
             {NAV_LINKS.map((link) => (
-              <a key={link.label} href={link.href} className={`px-3.5 py-2 rounded-lg text-[13.5px] font-medium transition-all duration-150 ${dark ? "text-slate-400 hover:text-white hover:bg-white/10" : "text-slate-500 hover:text-slate-900 hover:bg-black/5"}`}>
+              <a key={link.label} href={link.href} className={`px-3.5 py-2 rounded-lg text-[15.5px] font-medium transition-all duration-150 ${dark ? "text-slate-400 hover:text-white hover:bg-white/10" : "text-slate-500 hover:text-slate-900 hover:bg-black/5"}`}>
                 {link.label}
               </a>
             ))}
@@ -49,12 +49,12 @@ export default function Navbar({ scrolled }) {
               {dark ? <Sun size={15} /> : <Moon size={15} />}
             </button>
 
-            <Link to="/login" className={`hidden md:block text-[13.5px] font-semibold px-4 py-2 rounded-lg border transition-all duration-200 ${dark ? "text-slate-400 border-white/[0.1] hover:text-white hover:border-indigo-400" : "text-slate-600 border-black/[0.1] hover:text-slate-900 hover:border-indigo-400"}`}>
+            <Link to="/login" className={`hidden md:block text-[13.5px] font-semibold px-6 py-2.5 rounded-lg border transition-all duration-200 ${dark ? "text-slate-400 border-white/[0.1] hover:text-white hover:border-indigo-400" : "text-slate-600 border-black/[0.1] hover:text-slate-900 hover:border-indigo-400"}`}>
               Sign In
             </Link>
 
             <Link to="/register" className="hidden md:inline-flex">
-              <Button variant="primary" size="bold" className="text-[13.5px] px-4 py-2">
+              <Button variant="primary" size="bold" className="text-[13.5px] px-6 py-2.5">
                 Sign Up
               </Button>
             </Link>

@@ -20,6 +20,7 @@ import {
 } from "../components/ui";
 
 import { inventoryAPI, downloadBlob } from "../api";
+import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 
 /* ----------------------------- PRODUCT MODAL ----------------------------- */
@@ -226,6 +227,7 @@ function StockModal({ product, onClose, onSave }) {
 /* ----------------------------- MAIN PAGE ----------------------------- */
 
 export default function Inventory() {
+  const { isAdmin } = useAuth();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -370,14 +372,16 @@ export default function Inventory() {
           </button>
         </div>
 
-        <div className="flex justify-end gap-2">
-          <button onClick={handleExportProducts} disabled={exporting} className="btn-secondary flex items-center gap-2">
-            <Download size={14} /> {exporting ? 'Exporting...' : 'Export Products'}
-          </button>
-          <button onClick={handleExportMovements} disabled={exportingMovements} className="btn-secondary flex items-center gap-2">
-            <FileSpreadsheet size={14} /> {exportingMovements ? 'Generating...' : 'Stock Movements Report'}
-          </button>
-        </div>
+        {isAdmin && (
+          <div className="flex justify-end gap-2">
+            <button onClick={handleExportProducts} disabled={exporting} className="btn-secondary flex items-center gap-2">
+              <Download size={14} /> {exporting ? 'Exporting...' : 'Export Products'}
+            </button>
+            <button onClick={handleExportMovements} disabled={exportingMovements} className="btn-secondary flex items-center gap-2">
+              <FileSpreadsheet size={14} /> {exportingMovements ? 'Generating...' : 'Stock Movements Report'}
+            </button>
+          </div>
+        )}
 
         {/* TABLE */}
         <div className="card overflow-hidden">

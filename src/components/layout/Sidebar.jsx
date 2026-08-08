@@ -50,6 +50,12 @@ const NAV = [
     ],
   },
   {
+    group: 'Book Keeping',
+    items: [
+      { to: '/bookkeeping', icon: BookOpen, label: 'Ledger', adminOnly: true },
+    ],
+  },
+  {
     group: 'System',
     items: [
       { to: '/team',     icon: UserCog,  label: 'Team',     adminOnly: true },

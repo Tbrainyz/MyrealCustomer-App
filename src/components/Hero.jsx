@@ -123,18 +123,11 @@ export default function Hero() {
         <div className="text-center mb-14">
 
           {/* Badge + Clock row */}
-          <div className="flex flex-col items-center gap-3 mb-7">
-            {/* Eyebrow badge */}
-            <div
-              className={`inline-flex items-center gap-2 px-5 py-2 rounded-full border text-sm font-semibold tracking-wide
-                ${dark ? "bg-white/[0.05] border-white/[0.12] text-slate-300" : "bg-white border-black/[0.1] text-slate-600 shadow-sm"}`}
-            >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#4ade80] animate-pulse block" />
-              Welcome to MessagePro
-            </div>
-
+          <div className="flex flex-col items-center gap-3 mb-7">                   
             {/* Clock */}
-            <div className={`flex items-center gap-2 text-[13px] font-mono ${dark ? "text-slate-500" : "text-slate-400"}`}>
+            <div
+              className={`flex items-center gap-4 text-[15px] font-semibold font-mono ${dark ? "text-pink-500" : "text-pink-900"}`}
+            >
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping" />
               <span>{currentTime || "Loading time..."}</span>
             </div>
@@ -224,7 +217,7 @@ export default function Hero() {
                 className={`flex-1 text-center text-[12px] rounded-md px-3 py-1 mx-4
                   ${dark ? "bg-white/[0.05] text-slate-500" : "bg-black/[0.04] text-slate-400"}`}
               >
-                MessagePro — Dashboard
+                My Real Customer App — Dashboard
               </div>
               <span className="text-[11px] font-semibold text-emerald-400 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 block" /> Live

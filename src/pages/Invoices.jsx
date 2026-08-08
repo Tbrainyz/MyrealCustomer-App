@@ -7,6 +7,7 @@ import { invoicesAPI, downloadBlob } from '../api';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 /* ---------- KPI ---------- */
 function Kpi({ label, value, icon: Icon, color = 'purple' }) {
@@ -179,6 +180,7 @@ function InvoiceModal({ invoice, onClose, onSave }) {
 
 /* ---------- MAIN PAGE ---------- */
 export default function Invoices() {
+  const { isAdmin } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Handle Paystack redirect callback (?payment=success)
@@ -314,12 +316,16 @@ export default function Invoices() {
 
         {/* Action */}
         <div className="flex justify-end gap-2">
-          <button className="btn-secondary flex items-center gap-2" onClick={handleExportInvoices} disabled={exporting}>
-            <Download size={14} /> {exporting ? 'Exporting...' : 'Export Invoices'}
-          </button>
-          <button className="btn-secondary flex items-center gap-2" onClick={handleExportFinanceReport} disabled={exportingReport}>
-            <FileSpreadsheet size={14} /> {exportingReport ? 'Generating...' : 'Finance Report'}
-          </button>
+          {isAdmin && (
+            <>
+              <button className="btn-secondary flex items-center gap-2" onClick={handleExportInvoices} disabled={exporting}>
+                <Download size={14} /> {exporting ? 'Exporting...' : 'Export Invoices'}
+              </button>
+              <button className="btn-secondary flex items-center gap-2" onClick={handleExportFinanceReport} disabled={exportingReport}>
+                <FileSpreadsheet size={14} /> {exportingReport ? 'Generating...' : 'Finance Report'}
+              </button>
+            </>
+          )}
           <button className="btn-primary flex items-center gap-2" onClick={() => { setEditInvoice(null); setShowModal(true); }}>
             <Plus size={14} /> New Invoice
           </button>
