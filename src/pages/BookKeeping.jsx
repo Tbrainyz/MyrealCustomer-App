@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import {
   BookOpen, TrendingUp, TrendingDown, Wallet, Download,
-  Calendar, Filter, ArrowUpRight, ArrowDownRight, Package
+  Calendar, Filter, ArrowUpRight, ArrowDownRight
 } from 'lucide-react';
 import Header from '../components/layout/Header';
 import { Pagination, Spinner, EmptyState } from '../components/ui';
@@ -35,7 +35,6 @@ export default function BookKeeping() {
 
   const [entries, setEntries]   = useState([]);
   const [summary, setSummary]   = useState({ totalIncome: 0, totalExpenses: 0, netBalance: 0, totalEntries: 0 });
-  const [inventorySummary, setInventorySummary] = useState({ totalProducts: 0, totalStockValue: 0, totalRetailValue: 0, potentialProfit: 0, lowStockCount: 0 });
   const [loading, setLoading]   = useState(true);
   const [exporting, setExporting] = useState(false);
 
@@ -56,7 +55,6 @@ export default function BookKeeping() {
       const res = await bookkeepingAPI.getLedger(params);
       setEntries(res.data?.data || []);
       setSummary(res.data?.summary || { totalIncome: 0, totalExpenses: 0, netBalance: 0, totalEntries: 0 });
-      setInventorySummary(res.data?.inventorySummary || { totalProducts: 0, totalStockValue: 0, totalRetailValue: 0, potentialProfit: 0, lowStockCount: 0 });
       setPages(res.data?.pagination?.pages || 1);
     } catch {
       toast.error('Failed to load ledger');
@@ -97,7 +95,7 @@ export default function BookKeeping() {
 
   return (
     <>
-      <Header title="Book Keeping" subtitle="Unified ledger — Finance & Inventory" />
+      <Header title="Book Keeping" subtitle="Unified income & expense ledger" />
       <div className="p-5 lg:p-6 space-y-6 animate-fade-in">
 
         {/* Summary cards */}
@@ -111,37 +109,6 @@ export default function BookKeeping() {
             </div>
             <p className="text-2xl font-bold text-slate-900 dark:text-white">{summary.totalEntries}</p>
             <p className="text-xs text-brand-muted mt-0.5">Total Entries</p>
-          </div>
-        </div>
-
-        {/* Inventory summary */}
-        <div className="card p-5">
-          <h3 className="section-title mb-4 flex items-center gap-2">
-            <Package size={16} /> Inventory Overview
-          </h3>
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-            <div>
-              <p className="text-lg font-bold text-slate-900 dark:text-white">{inventorySummary.totalProducts}</p>
-              <p className="text-xs text-brand-muted">Total Products</p>
-            </div>
-            <div>
-              <p className="text-lg font-bold text-slate-900 dark:text-white">₦{inventorySummary.totalStockValue.toLocaleString()}</p>
-              <p className="text-xs text-brand-muted">Stock Value (Cost)</p>
-            </div>
-            <div>
-              <p className="text-lg font-bold text-slate-900 dark:text-white">₦{inventorySummary.totalRetailValue.toLocaleString()}</p>
-              <p className="text-xs text-brand-muted">Retail Value</p>
-            </div>
-            <div>
-              <p className="text-lg font-bold text-emerald-500">₦{inventorySummary.potentialProfit.toLocaleString()}</p>
-              <p className="text-xs text-brand-muted">Potential Profit</p>
-            </div>
-            <div>
-              <p className={`text-lg font-bold ${inventorySummary.lowStockCount > 0 ? 'text-red-500' : 'text-slate-900 dark:text-white'}`}>
-                {inventorySummary.lowStockCount}
-              </p>
-              <p className="text-xs text-brand-muted">Low Stock Items</p>
-            </div>
           </div>
         </div>
 
