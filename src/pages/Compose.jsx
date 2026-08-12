@@ -6,6 +6,18 @@ import Header from '../components/layout/Header';
 import { messagesAPI, contactsAPI, templatesAPI } from '../api';
 import { Spinner, Modal } from '../components/ui';
 import toast from 'react-hot-toast';
+import {
+  FaWhatsapp,
+  FaFacebook,
+  FaInstagram,
+  FaTiktok
+} from "react-icons/fa";
+
+import {
+  MdSms,
+  MdEmail
+} from "react-icons/md";
+
 const PLATFORMS = [
   {
     value: "whatsapp",
@@ -122,14 +134,22 @@ export default function Compose() {
     );
 
   // 📸 MEDIA UPLOAD
-  const handleMedia = e => {
+ const handleMedia = e => {
     const files = Array.from(e.target.files || []);
+
     const images = files.map(file => ({
-      file,
-      url: URL.createObjectURL(file)
+        file,
+        url: URL.createObjectURL(file)
     }));
+
     setMedia(prev => [...prev, ...images]);
-  };
+};
+
+useEffect(() => {
+    return () => {
+        media.forEach(img => URL.revokeObjectURL(img.url));
+    };
+}, [media]);
 
   const removeMedia = idx => {
     setMedia(m => m.filter((_, i) => i !== idx));
