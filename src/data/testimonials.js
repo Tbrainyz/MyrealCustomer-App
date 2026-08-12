@@ -1,9 +1,9 @@
 export const testimonials = [
   {
-    name: "Sarah Chen",
+    name: "Sadra Okeke",
     role: "CEO, NexaTech",
     text: "My Real Customer App transformed how we communicate with customers. Response time dropped from 2 hours to under 5 minutes — it's been a total game-changer for us.",
-    avatar: "SC",
+    avatar: "SO",
     color: "#4F46E5",
     stars: 5,
   },
@@ -16,10 +16,10 @@ export const testimonials = [
     stars: 5,
   },
   {
-    name: "Priya Patel",
-    role: "Ops Director, ScaleUp",
+    name: "Priya Janice",
+    role: "CEO, NextGen",
     text: "Having inventory, finances, and messaging in one platform is a game-changer. We cancelled 6 other subscriptions after switching to My Real Customer App.",
-    avatar: "PP",
+    avatar: "PJ",
     color: "#EC4899",
     stars: 5,
   },
@@ -40,8 +40,8 @@ export const testimonials = [
     stars: 5,
   },
   {
-    name: "James Okafor",
-    role: "CTO, PulseWave",
+    name: "James Obiora",
+    role: "CEO, PulseWave",
     text: "My Real Customer App is well-documented, genuine and reliable. Integration into our stack took less than a single day.",
     avatar: "JO",
     color: "#8B5CF6",
