@@ -6,17 +6,6 @@ import Header from '../components/layout/Header';
 import { messagesAPI, contactsAPI, templatesAPI } from '../api';
 import { Spinner, Modal } from '../components/ui';
 import toast from 'react-hot-toast';
-import {
-  FaWhatsapp,
-  FaFacebook,
-  FaInstagram,
-  FaTiktok
-} from "react-icons/fa";
-
-import {
-  MdSms,
-  MdEmail
-} from "react-icons/md";
 
 const PLATFORMS = [
   {
