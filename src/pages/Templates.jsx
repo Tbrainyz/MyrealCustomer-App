@@ -224,7 +224,7 @@ export default function Templates() {
                 {/* HEADER */}
                 <div className="flex justify-between mb-3">
                   <div>
-                    <h4 className="text-white font-medium">
+                    <h4 className="text-slate-800 dark:text-white font-medium">
                       {t.name}
                     </h4>
 

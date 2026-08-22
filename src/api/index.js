@@ -35,6 +35,8 @@ api.interceptors.response.use(
 
 export const authAPI = {
   register:       data       => api.post('/auth/register', data),
+  verifyEmail:    data       => api.post('/auth/verify-email', data),
+  resendVerification: data   => api.post('/auth/resend-verification', data),
   login:          (email, password) => api.post('/auth/login', { email, password }),
   me:             ()         => api.get('/auth/me'),
   updateProfile:  data       => api.put('/auth/profile', data),

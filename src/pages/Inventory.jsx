@@ -295,7 +295,7 @@ export default function Inventory() {
 
         return [
           <div>
-            <p className="text-white font-medium">{p.name}</p>
+            <p className="text-slate-800 dark:text-white font-medium">{p.name}</p>
             <p className="text-xs text-brand-muted font-mono">{p.sku}</p>
           </div>,
 

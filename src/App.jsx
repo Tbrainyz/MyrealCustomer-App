@@ -12,6 +12,7 @@ import Login         from './pages/Login';
 import Register      from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import CodeVerification from './pages/CodeVerification';
 
 // Dashboard pages
 import Dashboard     from './pages/Dashboard';
@@ -79,6 +80,7 @@ function AppRoutes() {
       {/* Auth */}
       <Route path="/login"           element={<PublicRoute><Login /></PublicRoute>} />
       <Route path="/register"        element={<PublicRoute><Register /></PublicRoute>} />
+      <Route path="/verify-email"    element={<PublicRoute allowIfLoggedIn><CodeVerification /></PublicRoute>} />
       <Route path="/forgot-password" element={<PublicRoute allowIfLoggedIn><ForgotPassword /></PublicRoute>} />
       <Route path="/reset-password"  element={<PublicRoute allowIfLoggedIn><ResetPassword /></PublicRoute>} />
 

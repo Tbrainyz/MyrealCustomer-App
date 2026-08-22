@@ -336,7 +336,7 @@ export default function Scheduled() {
         <span className={`text-xs font-semibold ${platformColor[m.platform] || 'text-white'}`}>
           {(m.platform || '').toUpperCase()}
         </span>,
-        <p className="text-sm text-white truncate max-w-xs">{m.content}</p>,
+        <p className="text-sm text-slate-800 dark:text-white truncate max-w-xs">{m.content}</p>,
         <div className="flex items-center gap-1 text-xs text-brand-muted">
           <Clock size={12} />
           {format(new Date(m.scheduledAt), 'MMM d, yyyy h:mm a')}

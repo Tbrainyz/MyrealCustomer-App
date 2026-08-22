@@ -49,7 +49,7 @@ export default function StockMovements() {
 
         return [
           <div className="flex flex-col">
-            <span className="text-white font-medium">
+            <span className="text-slate-800 dark:text-white font-medium">
               {product.name || 'Unknown Product'}
             </span>
             <span className="text-xs text-brand-muted font-mono">
@@ -109,7 +109,7 @@ export default function StockMovements() {
           <div className="card p-4 flex items-center justify-between">
             <div>
               <p className="text-sm text-brand-muted">Total Movements</p>
-              <h3 className="text-xl font-bold text-white">{stats.total}</h3>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">{stats.total}</h3>
             </div>
             <Package className="text-primary-400" />
           </div>

@@ -33,7 +33,7 @@ function SummaryCard({ label, value, icon: Icon, color }) {
 }
 
 const TABS = [
-  { id: 'ledger',    label: 'Ledger',         icon: BookOpen },
+  { id: 'ledger',    label: 'Reporting',       icon: BookOpen },
   { id: 'movements', label: 'Stock Movements', icon: ArrowLeftRight },
   { id: 'products',  label: 'Products',        icon: Boxes },
 ];
@@ -216,7 +216,7 @@ export default function BookKeeping() {
               {/* LEDGER TAB */}
               {activeTab === 'ledger' && (
                 ledger.length === 0 ? (
-                  <EmptyState icon={BookOpen} title="No ledger entries" description="Paid invoices and expenses will appear here." />
+                  <EmptyState icon={BookOpen} title="No reporting entries" description="Paid invoices and expenses will appear here." />
                 ) : (
                   <table className="w-full text-sm">
                     <thead>

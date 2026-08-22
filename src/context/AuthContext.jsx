@@ -75,6 +75,16 @@ export function AuthProvider({ children }) {
     return user;
   };
 
+  // Called after successful OTP verification during registration —
+  // backend returns a token+user just like login does.
+  const verifyEmailAndLogin = async (email, otp) => {
+    const res = await authAPI.verifyEmail({ email, otp });
+    const { token, user } = res.data.data;
+    localStorage.setItem('token', token);
+    dispatch({ type: 'LOGIN_SUCCESS', payload: { user, token } });
+    return user;
+  };
+
   const logout = useCallback(() => {
     localStorage.removeItem('token');
     dispatch({ type: 'LOGOUT' });
@@ -104,6 +114,7 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider value={{
       ...state,
       login,
+      verifyEmailAndLogin,
       logout,
       updateUser,
       isAdmin,

@@ -79,8 +79,8 @@ export default function SenderIdRegistration({ businessName }) {
       </div>
 
       <p className="text-xs text-brand-muted">
-        Your Sender ID is The Name Customers See Instead Of a Phone Number (e.g. "APEXGLO").
-        Must be 3-11 Characters, Letters and Numbers Only. Requires approval from SmartSMS (~24-48hrs).
+        Your Sender ID is the name customers see instead of a phone number (e.g. "APEXGLO").
+        Must be 3-11 characters, letters and numbers only. Requires approval from SmartSMS (~24-48hrs).
       </p>
 
       <div>

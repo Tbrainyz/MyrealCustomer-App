@@ -69,8 +69,8 @@ export default function Register() {
     setLoading(true);
     try {
       await authAPI.register({ name: form.name, email: form.email, password: form.password });
-      toast.success('Account created! Please sign in.');
-      navigate('/login');
+      toast.success('Account created! Check your email for a verification code.');
+      navigate('/verify-email', { state: { email: form.email } });
     } catch (err) {
       toast.error(err?.response?.data?.message || 'Registration failed');
     } finally {

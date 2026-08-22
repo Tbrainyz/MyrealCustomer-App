@@ -1,155 +1,172 @@
-import React from "react";
-import { useRef, useState } from "react";
-import { ShieldCheck, ArrowLeft, Zap } from "lucide-react";
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { ShieldCheck, ArrowLeft, Mail } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+import { authAPI } from '../api';
+import toast from 'react-hot-toast';
+import AuthLayout from '../layouts/AuthLayout';
+import { AuthButton } from '../components/ui/AuthInput';
 
-const CodeVerification = () => {
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const inputRefs = useRef([]);
-
-  const handleChange = (value, index) => {
-    if (!/^\d*$/.test(value)) return;
-
-    const updatedOtp = [...otp];
-    updatedOtp[index] = value.slice(-1);
-    setOtp(updatedOtp);
-
-    if (value && index < otp.length - 1) {
-      inputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-  };
-
+function LeftContent() {
+  const { dark } = useTheme();
   return (
-    <div className="min-h-screen bg-[#050816] text-white flex items-center justify-center overflow-hidden relative px-6 py-10">
-      {/* Background Glow */}
-      <div className="absolute top-[-120px] left-[-120px] w-[350px] h-[350px] bg-cyan-500/20 blur-3xl rounded-full" />
-      <div className="absolute bottom-[-140px] right-[-120px] w-[400px] h-[400px] bg-violet-500/20 blur-3xl rounded-full" />
-      <div className="absolute top-[45%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-fuchsia-500/10 blur-3xl rounded-full" />
-
-      <div className="w-full max-w-5xl grid lg:grid-cols-2 overflow-hidden rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-2xl shadow-2xl relative z-10">
-        {/* Left Section */}
-        <div className="hidden lg:flex flex-col justify-between p-12 border-r border-white/10 bg-gradient-to-br from-cyan-500/10 via-transparent to-violet-500/10">
+    <div className="space-y-8">
+      <div>
+        <h2 className={`text-[2.4rem] font-bold leading-[1.15] mb-4 ${dark ? 'text-white' : 'text-slate-900'}`}>
+          Verify your{' '}
+          <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">email address.</span>
+        </h2>
+        <p className={`text-base leading-relaxed ${dark ? 'text-slate-400' : 'text-slate-500'}`}>
+          We sent a 6-digit verification code to your email. Enter it to activate your account.
+        </p>
+      </div>
+      <div className={`p-5 rounded-2xl border ${dark ? 'bg-white/[0.04] border-white/10' : 'bg-white border-slate-100 shadow-sm'}`}>
+        <div className="flex items-start gap-4">
+          <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${dark ? 'bg-cyan-500/10' : 'bg-cyan-50'}`}>
+            <ShieldCheck size={22} className="text-cyan-500" />
+          </div>
           <div>
-            <div className="flex items-center gap-4 mb-10">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-[10px] bg-gradient-to-br from-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                <Zap size={18} className="text-white" />
-              </div>
-
-              <div>
-                <h1 className="text-2xl font-bold tracking-wide">
-                  {" "}
-                  My Real Customer App
-                </h1>
-                <p className="text-sm text-gray-400">
-                  Secure Verification System
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              <h2 className="text-5xl font-bold leading-tight max-w-xl">
-                Verify your identity securely.
-              </h2>
-
-              <p className="text-lg text-gray-300 leading-relaxed max-w-lg">
-                We’ve sent a secure verification code to your registered email
-                address to protect your account.
-              </p>
-            </div>
-          </div>
-
-          <div className="p-6 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md">
-            <div className="flex items-start gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400">
-                <ShieldCheck size={28} />
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold mb-2">
-                  Multi-Layer Protection
-                </h3>
-                <p className="text-gray-400 leading-relaxed text-sm">
-                  Your verification process is protected with enterprise-grade
-                  security and encrypted authentication.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Section */}
-        <div className="flex items-center justify-center p-8 sm:p-12">
-          <div className="w-full max-w-md">
-            <button className="flex items-center gap-2 text-gray-400 hover:text-white transition mb-8">
-              <ArrowLeft size={18} />
-              Back
-            </button>
-
-            <div className="mb-8">
-              <div className=" mb-6">
-                <ShieldCheck size={36} className="text-cyan-400" />
-              </div>
-
-              <h2 className="text-4xl font-bold mb-3">OTP Verification</h2>
-
-              <p className="text-gray-400 leading-relaxed">
-                Enter the 6-digit verification code sent to your email address.
-              </p>
-            </div>
-
-            <form className="space-y-8">
-              <div className="flex items-center justify-between gap-3">
-                {otp.map((digit, index) => (
-                  <input
-                    key={index}
-                    ref={(el) => (inputRefs.current[index] = el)}
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleChange(e.target.value, index)}
-                    onKeyDown={(e) => handleKeyDown(e, index)}
-                    className="w-14 h-16 sm:w-16 sm:h-18 rounded-2xl bg-white/5 border border-white/10 text-center text-2xl font-bold focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 outline-none transition-all duration-300"
-                  />
-                ))}
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-4 rounded-2xl bg-gradient-to-r from-cyan-400 to-violet-500 text-black font-semibold hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-cyan-500/20"
-              >
-                Verify Code
-              </button>
-            </form>
-
-            <div className="mt-8 flex items-center justify-between text-sm">
-              <p className="text-gray-400">Didn’t receive the code?</p>
-
-              <button className="text-cyan-400 hover:text-cyan-300 transition font-medium">
-                Resend Code
-              </button>
-            </div>
-
-            <div className="mt-8 p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
-              <p className="text-sm text-gray-400 leading-relaxed">
-                For security reasons, this verification code will expire in 5
-                minutes.
-              </p>
-            </div>
-
-            <p className="text-center text-gray-500 text-sm mt-8">
-              Protected with enterprise-level authentication.
+            <h3 className={`font-semibold mb-1 ${dark ? 'text-white' : 'text-slate-800'}`}>Secure Account Activation</h3>
+            <p className={`text-sm leading-relaxed ${dark ? 'text-slate-400' : 'text-slate-500'}`}>
+              This confirms you own the email address and protects your workspace from unauthorized signups.
             </p>
           </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default CodeVerification;
+export default function CodeVerification() {
+  const { dark } = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { verifyEmailAndLogin } = useAuth();
+
+  const email = location.state?.email || '';
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
+  const inputRefs = useRef([]);
+
+  useEffect(() => {
+    if (!email) {
+      toast.error('No email found. Please register again.');
+      navigate('/register');
+    }
+  }, [email, navigate]);
+
+  const handleChange = (value, index) => {
+    if (!/^\d*$/.test(value)) return;
+    const updated = [...otp];
+    updated[index] = value.slice(-1);
+    setOtp(updated);
+    if (value && index < 5) inputRefs.current[index + 1]?.focus();
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handlePaste = (e) => {
+    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+    if (pasted.length === 6) {
+      setOtp(pasted.split(''));
+      inputRefs.current[5]?.focus();
+    }
+  };
+
+  const handleVerify = async () => {
+    const code = otp.join('');
+    if (code.length !== 6) return toast.error('Enter the full 6-digit code');
+
+    setLoading(true);
+    try {
+      await verifyEmailAndLogin(email, code);
+      toast.success('Email verified! Welcome aboard.');
+      navigate('/dashboard');
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Invalid or expired code');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setResending(true);
+    try {
+      await authAPI.resendVerification({ email });
+      toast.success('New verification code sent');
+      setOtp(['', '', '', '', '', '']);
+      inputRefs.current[0]?.focus();
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Failed to resend code');
+    } finally {
+      setResending(false);
+    }
+  };
+
+  const inputBase = `w-full aspect-square rounded-2xl text-center text-2xl font-bold outline-none transition-all duration-200
+    ${dark
+      ? 'bg-white/[0.05] border-2 border-white/10 text-white focus:border-indigo-400 focus:bg-indigo-500/5'
+      : 'bg-slate-50 border-2 border-slate-200 text-slate-900 focus:border-indigo-500 focus:bg-white'
+    }`;
+
+  return (
+    <AuthLayout leftContent={<LeftContent />}>
+      <div>
+        <Link to="/register" className={`inline-flex items-center gap-2 text-sm mb-8 transition-colors ${dark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'}`}>
+          <ArrowLeft size={16} /> Back
+        </Link>
+
+        <div className="mb-8">
+          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-5 ${dark ? 'bg-indigo-500/15' : 'bg-indigo-50'}`}>
+            <Mail size={24} className={dark ? 'text-indigo-400' : 'text-indigo-600'} />
+          </div>
+          <h2 className={`text-3xl font-bold mb-2 ${dark ? 'text-white' : 'text-slate-900'}`}>Verify Your Email</h2>
+          <p className={`text-sm ${dark ? 'text-slate-400' : 'text-slate-500'}`}>
+            Enter the 6-digit code sent to <span className="font-semibold">{email}</span>
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          <div className="grid grid-cols-6 gap-2.5" onPaste={handlePaste}>
+            {otp.map((digit, i) => (
+              <input
+                key={i}
+                ref={el => (inputRefs.current[i] = el)}
+                type="text"
+                inputMode="numeric"
+                maxLength={1}
+                value={digit}
+                onChange={e => handleChange(e.target.value, i)}
+                onKeyDown={e => handleKeyDown(e, i)}
+                className={inputBase}
+              />
+            ))}
+          </div>
+
+          <AuthButton loading={loading} onClick={handleVerify}>Verify & Continue</AuthButton>
+        </div>
+
+        <div className="flex items-center justify-between mt-7 text-sm">
+          <p className={dark ? 'text-slate-400' : 'text-slate-500'}>Didn't receive the code?</p>
+          <button
+            onClick={handleResend}
+            disabled={resending}
+            className={`font-semibold transition-colors disabled:opacity-50 ${dark ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-700'}`}
+          >
+            {resending ? 'Sending...' : 'Resend Code'}
+          </button>
+        </div>
+
+        <div className={`mt-5 p-4 rounded-2xl border text-sm ${dark ? 'bg-white/[0.03] border-white/8 text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>
+          ⏱ This code expires in <span className={`font-semibold ${dark ? 'text-white' : 'text-slate-700'}`}>15 minutes</span> for your security.
+        </div>
+      </div>
+    </AuthLayout>
+  );
+}

@@ -86,7 +86,7 @@ export default function MessageLogs() {
       return [
         /* CONTACT */
         <div>
-          <p className="text-sm font-medium text-white">
+          <p className="text-sm font-medium text-slate-800 dark:text-white">
             {contact.name || 'Unknown'}
           </p>
 

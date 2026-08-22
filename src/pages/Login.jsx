@@ -105,6 +105,11 @@ export default function Login() {
       await login(email.trim(), password);
       navigate('/dashboard');
     } catch (err) {
+      if (err?.response?.data?.code === 'EMAIL_NOT_VERIFIED') {
+        toast.error('Please verify your email first — redirecting...');
+        navigate('/verify-email', { state: { email: err.response.data.email || email.trim() } });
+        return;
+      }
       const msg = err?.response?.data?.message || 'Login failed. Check your credentials.';
       toast.error(msg);
     } finally {
